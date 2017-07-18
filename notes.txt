@@ -1,0 +1,90 @@
+Services
+
+UI
+Pages
+Websockets?
+Users
+Events
+Articles
+Resources
+Galleries
+Version Control
+
+Pages
+
+- Analyze Page Differences
+- Store CSS and JS
+- Store HTML
+- Get Pages
+- Edit Pages
+
+Websockets?
+- Update pages?
+
+Users
+
+- Login
+- Store Users
+- Retrieve Users
+- Edit Users
+- Delete Users
+
+Events
+
+- CRUD Events
+
+Articles
+
+- CRUD Articles
+
+Resources
+
+- Manage Donations
+- Manage other aspects of business
+
+Galleries
+
+- CRUD Galleries
+
+Version Control
+
+- cache all published versions of site
+- accessible to roll back the site in case of break.
+
+UI
+
+- Pages error out if something looks long
+- Display pages html after css loaded in
+- Add JS after HTML
+- All react, no jQuery please
+- Focus on purity and re-usability
+- Make sure that css is constant
+- Make all editors in page
+- Publish pages
+- Navigate Pages
+
+	UI Parts
+
+	- Display HTML Page
+	- Action Button
+	- Event Editor
+	- Gallery Editor
+	- Article Editor
+	- Page Navigator
+	- Profile Editor
+	- Slack Chat Page
+	- Resource Page
+	- Analytics Page (Google Analytics)
+
+Goals
+
+- Use Docker
+- AWS
+- Circle CI
+- CD
+- PGWA
+- Write Tests
+- Practice Chrome Debugger
+- Learn to analyze Webpack builds
+- Clean Javascript
+- Lazy Load Code
