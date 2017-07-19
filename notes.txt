@@ -32,6 +32,8 @@ Users
 Events
 
 - CRUD Events
+- Removing Old Events
+- Updating Featured / Upcoming Events
 
 Articles
 
@@ -75,6 +77,7 @@ UI
 	- Slack Chat Page
 	- Resource Page
 	- Analytics Page (Google Analytics)
+	- Page Version Previewer and Reversion
 
 Goals
 
@@ -88,3 +91,111 @@ Goals
 - Learn to analyze Webpack builds
 - Clean Javascript
 - Lazy Load Code
+
+Page Schema
+
+{
+	type: "page",
+	id: 1,
+	url: 'http://',
+	html: {
+		head: "",
+		body: "",
+		dom: {
+			HTMLOBJ
+		}
+	},
+	js: {
+		scripts: [
+			{
+				url: "",
+				content: "",
+			},
+		],
+	},
+	css: {
+		styles: [
+			{
+				url: "",
+				content: "",
+			},
+		],
+	},
+
+}
+
+User Schema:
+
+{
+	type: "user",
+	id: 1,
+	firstName: "",
+	lastName: "",
+	title: "",
+	username: "",
+	password: "",
+	dateJoined: Date,
+	lastLoggedIn: Date,
+	email: "",
+}
+
+Event Schema
+
+{
+	type: "event",
+	id: "",
+	eventDate: Date,
+	dateCreated: Date,
+	dateEdited: Date,
+	title: "",
+	desc: "",
+	urls: {
+		articleLink: "",
+		papperlessPostLink: "",
+	}
+}
+
+Article Schema
+
+{
+	type: "article",
+	id: "",
+	dateCreated: Date,
+	dateEdited: Date,
+	title: "",
+	author: "",
+	sections: [
+		{
+			title: "",
+			markdown: "",
+			html: "",
+		}
+	]
+}
+
+Gallery Schema
+
+{
+	type: "gallery",
+	id: "",
+	dateCreated: Date,
+	dateEdited: Date,
+	title: "",
+	images: [
+		{
+			actual: "",
+			placeholder: "",
+		}
+	]
+}
+
+Version Control Schema
+
+{
+	type: "version",
+	id: "",
+	publisher: "",
+	publishComment: "",
+	date: Date,
+	page: Page Schema [Compress with gzip and hpack algo],
+}
