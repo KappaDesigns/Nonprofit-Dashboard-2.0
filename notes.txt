@@ -38,6 +38,7 @@ Events
 Articles
 
 - CRUD Articles
+- Recommended Articles
 
 Resources
 
@@ -92,6 +93,10 @@ Goals
 - Clean Javascript
 - Lazy Load Code
 
+=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=
+															Schemas
+=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=
+
 Page Schema
 
 {
@@ -99,25 +104,27 @@ Page Schema
 	id: 1,
 	url: 'http://',
 	html: {
-		head: "",
-		body: "",
-		dom: {
-			HTMLOBJ
-		}
+		head: String,
+		body: String,
+	},
+	dom: {
+		html: AST,
+		body: AST,
+		head: AST,
 	},
 	js: {
 		scripts: [
 			{
-				url: "",
-				content: "",
+				url: String,
+				content: String,
 			},
 		],
 	},
 	css: {
 		styles: [
 			{
-				url: "",
-				content: "",
+				url: String,
+				content: String,
 			},
 		],
 	},
@@ -129,29 +136,29 @@ User Schema:
 {
 	type: "user",
 	id: 1,
-	firstName: "",
-	lastName: "",
-	title: "",
-	username: "",
-	password: "",
+	firstName: String,
+	lastName: String,
+	title: String,
+	username: String,
+	password: String,
 	dateJoined: Date,
 	lastLoggedIn: Date,
-	email: "",
+	email: String,
 }
 
 Event Schema
 
 {
 	type: "event",
-	id: "",
+	id: String,
 	eventDate: Date,
 	dateCreated: Date,
 	dateEdited: Date,
-	title: "",
-	desc: "",
+	title: String,
+	desc: String,
 	urls: {
-		articleLink: "",
-		papperlessPostLink: "",
+		articleLink: String,
+		papperlessPostLink: String,
 	}
 }
 
@@ -159,16 +166,16 @@ Article Schema
 
 {
 	type: "article",
-	id: "",
+	id: String,
 	dateCreated: Date,
 	dateEdited: Date,
-	title: "",
-	author: "",
+	title: String,
+	author: String,
 	sections: [
 		{
-			title: "",
-			markdown: "",
-			html: "",
+			title: String,
+			markdown: String,
+			html: String,
 		}
 	]
 }
@@ -177,14 +184,14 @@ Gallery Schema
 
 {
 	type: "gallery",
-	id: "",
+	id: String,
 	dateCreated: Date,
 	dateEdited: Date,
-	title: "",
+	title: String,
 	images: [
 		{
-			actual: "",
-			placeholder: "",
+			actual: String,
+			placeholder: String,
 		}
 	]
 }
@@ -193,9 +200,45 @@ Version Control Schema
 
 {
 	type: "version",
-	id: "",
-	publisher: "",
-	publishComment: "",
+	id: String,
+	publisher: String,
+	publishComment: String,
 	date: Date,
 	page: Page Schema [Compress with gzip and hpack algo],
 }
+
+=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=
+															Algorithims
+=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=
+
+HTML Page returns new AST
+
+- Tokenize Page
+- Create AST
+	{
+		tag: String,
+
+		type: Node | Text,
+		attrs: [ Object ],
+	}
+
+HTML DIF returns new AST
+
+- Take Children
+- Check Length
+	• Node Added
+	• Node Removed
+- Loop Children
+  • pass to function that stringifies node
+	• add string to array
+- Check Array for Missing Nodes / New Nodes / Edited Nodes
+ • Update AST
+ • Change all nodes where stringID matches and set text to current text
+
+=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=
+ 															Ideas
+=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=
+
+- Changes made on the client site show some UI that asks admin
+ 		panel users if they would like to see changes
+- 
