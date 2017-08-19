@@ -1,3 +1,7 @@
+Authentication
+
+- JWT (Allows for Server - Server verification and Client - Server Verification)
+
 Services
 
 UI
