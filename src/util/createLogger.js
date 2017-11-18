@@ -8,7 +8,7 @@ const logFormat = printf(function handleFormat(info) {
 	return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
 });
 
-module.exports = function Logger(tag: string, levels: Array<string>) {
+module.exports = function Logger(tag, levels) {
 	let fileArray = levels.map((x) => {
 		let obj = {
 			filename: '',

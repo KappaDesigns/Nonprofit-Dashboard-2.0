@@ -37,8 +37,8 @@
   },
   "scripts": {
     "flow": "flow || true",
-    "test:karma": "(npm run flow && karma start karma.conf.js) || true",
-    "test:mocha": "(npm run flow && ./node_modules/mocha/bin/mocha tests/*.test.js) || true"
+    "test:karma": "(./node_modules/.bin/eslint ./src/ ./tests && karma start karma.conf.js) || true",
+    "test:mocha": "(./node_modules/.bin/eslint ./src/ ./tests && ./node_modules/mocha/bin/mocha tests/*.test.js) || true"
   },
   "repository": {
     "type": "git",
