@@ -1,7 +1,8 @@
+//@flow
 const { createLogger, format, transports, config, addColors, add, remove } = require('winston');
 const { combine, colorize, timestamp, label, printf } = format;
 
-const GLOBAL_LOG = { filename: 'logs/combined.log' };
+const GLOBAL_LOG = new transports.File({ filename: 'logs/combined.log' });
 
 const logFormat = printf(function handleFormat(info) {
     return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
@@ -27,7 +28,15 @@ const logLevels = {
 }
 
 
-module.exports = function (tag, fileArray) {
+module.exports = function (tag: string, levels: Array<string>) {
+    let fileArray = levels.map((x) => {
+        let obj = {
+            filename: '',
+            level: x,
+        }
+        obj.filename = `logs/${x}_${tag.toLowerCase()}.log`;
+        return new transports.File(obj);
+    });
     fileArray.push(GLOBAL_LOG);
     let logger = createLogger({
         level: process.env.LOG_LEVEL,
@@ -36,12 +45,7 @@ module.exports = function (tag, fileArray) {
             timestamp(),
             logFormat
         ),
-        transports: fileArray.map((x) => {
-            if (!x.filename) {
-                x.filename = `logs/${x.level}_${tag.toLowerCase()}.log`;
-            }
-            return new transports.File(x);
-        }),
+        transports: fileArray,
     });
     if (process.env.NODE_ENV !== 'production') {
         logger.add(new transports.Console({
@@ -52,5 +56,5 @@ module.exports = function (tag, fileArray) {
             )
         }));
     }
-    return logger
+    return logger;
 }

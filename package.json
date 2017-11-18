@@ -11,7 +11,8 @@
     "babel-preset-flow": "^6.23.0",
     "dotenv": "^4.0.0",
     "flow-bin": "^0.59.0",
-    "mysql": "^2.15.0",
+    "mysql2": "^1.5.0",
+    "sequelize": "^4.22.8",
     "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
@@ -30,8 +31,8 @@
   },
   "scripts": {
     "flow": "flow || true",
-    "test:karma": "karma start karma.conf.js || true",
-    "test:mocha": "./node_modules/mocha/bin/mocha tests/*.test.js || true"
+    "test:karma": "(npm run flow && karma start karma.conf.js) || true",
+    "test:mocha": "(npm run flow && ./node_modules/mocha/bin/mocha tests/*.test.js) || true"
   },
   "repository": {
     "type": "git",
