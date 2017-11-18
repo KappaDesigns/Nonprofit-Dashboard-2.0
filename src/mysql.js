@@ -15,9 +15,17 @@ const Connection = MYSQL.createConnection({
 
 Connection.connect(function handleConnection(err) {
     if (err) {
-        // Error Connecting to MYSQL DB
+        // Error Connecting to MYSQL Database
         logger.error(`Error Connecting To MYSQL Database. [Message]: ${err.message}`);
         throw err;
     }
     logger.info(`Susccessfully Connected To Database.`)
+    createDatabase();
 });
+
+function createDatabase() {
+    Connection.query("CREATE DATABASE foo", function createDBHandler(err, result) {
+        if (err) throw err;
+        logger.info("Successfully created database foo");
+    });
+}
