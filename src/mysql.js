@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 const Sequelize = require('sequelize');
-const Logger = require('../config/createLogger');
+const Logger = require('./util/createLogger');
 
 const logger = Logger('MYSQL', [
 	'error',
