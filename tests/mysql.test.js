@@ -1,7 +1,9 @@
+//@flow
+
 require('dotenv').config();
 const MYSQL = require('mysql');
 
-const logger = require('./config/createLogger')('MYSQL', [
+const logger = require('../config/createLogger')('MYSQL', [
     { level: 'error'},
 ]);
 

@@ -1,0 +1,32 @@
+{
+  "name": "kappa-dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard for nonprofits to change and manage their websites",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "dotenv": "^4.0.0",
+    "flow-bin": "^0.59.0",
+    "mysql": "^2.15.0",
+    "winston": "^3.0.0-rc1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flow": "flow || true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KappaDesigns/Nonprofit-Dashboard-2.0.git"
+  },
+  "author": "Evan Coulson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KappaDesigns/Nonprofit-Dashboard-2.0/issues"
+  },
+  "homepage": "https://github.com/KappaDesigns/Nonprofit-Dashboard-2.0#readme"
+}
