@@ -4,9 +4,7 @@ require('dotenv').config();
 const Sequelize = require('sequelize');
 const Logger = require('./util/createLogger');
 
-const logger = Logger('MYSQL', [
-	'error',
-]);
+const logger = Logger('MYSQL', ['error', 'debug']);
 
 const sequelize = new Sequelize(
 	'foo', 
@@ -15,7 +13,7 @@ const sequelize = new Sequelize(
 	{
 		host: process.env.DB_HOST,
 		dialect: 'mysql',
-
+		logging: false,
 		pool: {
 			max: 5,
 			min: 0,
@@ -25,15 +23,31 @@ const sequelize = new Sequelize(
 	}
 );
 
-sequelize
-	.authenticate()
-	.then(function handleConnection() {
-		logger.info('Succesfully established a connection with database: foo');
-	})
-	.catch(function handleError(err) {
-		logger.error(`Unable to connect to the database: ${err}`);
+sequelize.authenticate().then(function handleConnection() {
+	logger.info('Succesfully established a connection with database: "foo"');
+}).catch(function handleError(err) {
+	logger.error(`Unable to connect to the database: ${err}`);
+});
+
+const Animal = sequelize.define('animals', {
+	species: {
+		type: Sequelize.STRING,
+	},
+	sound: {
+		type: Sequelize.STRING,
+	},
+});
+
+Animal.sync({force: true}).then(() => {
+	logger.info('Table: "animals" succesfully created');
+	return Animal.create({
+		species: 'Lion',
+		sound: 'RAWR',
 	});
-	
-
-
-logger.info('test');
+}).then(function () {
+	Animal.findAll().then(function handleAnimals(animals) {
+		logger.debug(animals);
+	}).catch(function handleError(err) {
+		logger.error(err);
+	});
+});
