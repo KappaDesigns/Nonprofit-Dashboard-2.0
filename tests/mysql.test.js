@@ -1,8 +1,8 @@
 const chai = require('chai');
+const createDatabaseConnection = require('../src/util/mysql');
 const expect = chai.expect;
 
-describe('A test suite', function() {
-	beforeEach(function() { });
-	afterEach(function() { });
-	it('should fail', function() { expect(true).to.be.false; });
+describe('MYSQL Test Suite', async function() {
+	const MYSQL = await createDatabaseConnection('foo');
+	
 });
