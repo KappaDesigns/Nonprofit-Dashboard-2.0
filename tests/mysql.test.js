@@ -1,47 +1,54 @@
-// const chai = require('chai');
+const chai = require('chai');
 const createDatabaseConnection = require('../src/util/mysql');
-// const expect = chai.expect;
+const Logger = require('../src/util/createLogger');
+const logger = Logger('mysql', [], true);
+const expect = chai.expect;
 
-describe('MYSQL Test Suite', async function() {
-	const MYSQL = await createDatabaseConnection('test');
+let MYSQL;
 
-	const Animal = MYSQL.define('animals', {
-		species: {
-			type: MYSQL.types.STRING,
-		},
-		sound: {
-			type: MYSQL.types.STRING,
-		},
+before(async function() {
+	MYSQL = await createDatabaseConnection('test');
+	console.log();
+});
+
+describe('MYSQL Test Suite', function() {
+	let Animal;
+
+	it('Should Define A Schema', () => {
+		Animal = MYSQL.define('animals', {
+			species: {
+				type: MYSQL.types.STRING,
+			},
+			sound: {
+				type: MYSQL.types.STRING,
+			},
+		});
+		logger.info('Successfully created Schema');
+		expect(true).to.equal(true);
+	});
+	
+	it('Should Create A Table', (done) => {
+		Animal.sync({ force: true }).then(function () {
+			logger.info('Table: "animals" successfully created');
+			Animal.create({
+				species: 'Lion',
+				sound: 'rawr',
+			});
+			done();
+		});
 	});
 
-	Animal.sync({ force: true }).then(function () {
-		return Animal.create({
-			species: 'Lion',
-			sound: 'rawr',
+	it('Should Find All Rows In The Table', (done) => {
+		Animal.findAll().then(function handleAnimals(animals) {
+			logger.debug(`Found all animals. Length of ${animals.length}`);
+			for (let i = 0; i < animals.length; i++) {
+				logger.debug(`row_${i}: ${JSON.stringify(animals[i].dataValues)}`);
+				expect(animals[i].dataValues.species.toLowerCase()).to.equal('lion');
+			}
+			done();
+		}).catch(function handleError(err) {
+			logger.error(`Error finding all animals.\n\tError:${err}`);
+			done(err);
 		});
 	});
 });
-
-// testing code
-// const Animal = sequelize.define('animals', {
-// 	species: {
-// 		type: Sequelize.STRING,
-// 	},
-// 	sound: {
-// 		type: Sequelize.STRING,
-// 	},
-// });
-
-// Animal.sync({force: true}).then(() => {
-// 	logger.info('Table: "animals" succesfully created');
-// 	return Animal.create({
-// 		species: 'Lion',
-// 		sound: 'RAWR',
-// 	});
-// }).then(function () {
-// 	Animal.findAll().then(function handleAnimals(animals) {
-// 		logger.debug(animals);
-// 	}).catch(function handleError(err) {
-// 		logger.error(err);
-// 	});
-// });

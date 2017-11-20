@@ -25,7 +25,7 @@ module.exports = async function (database) {
 	await sequelize.authenticate().then(function handleConnection() {
 		logger.info(`Succesfully established a connection with database: "${database}"`);
 	}).catch(function handleError(err) {
-		logger.error(`Unable to connect to the database: ${err}`);
+		logger.error(`Unable to connect to the database.\nError: ${err}`);
 	});
 	sequelize.types = Sequelize;
 	return sequelize;
