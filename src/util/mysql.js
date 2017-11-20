@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const Logger = require('./createLogger');
 
 module.exports = async function (database) {
-	const logger = Logger(`sql:{${database}}`, ['error', 'debug']);	
+	const logger = Logger(`db:${database}`, ['error', 'debug']);	
 	const sequelize = new Sequelize(
 		database, 
 		process.env.DB_USERNAME, 
@@ -21,9 +21,10 @@ module.exports = async function (database) {
 		}
 	);
 	await sequelize.authenticate().then(function handleConnection() {
-		logger.info('Succesfully established a connection with database: "foo"');
+		logger.info(`Succesfully established a connection with database: "${database}"`);
 	}).catch(function handleError(err) {
 		logger.error(`Unable to connect to the database: ${err}`);
 	});
+	sequelize.types = Sequelize;
 	return sequelize;
 };

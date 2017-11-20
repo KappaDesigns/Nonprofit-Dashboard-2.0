@@ -14,7 +14,7 @@ module.exports = function Logger(tag, levels) {
 			filename: '',
 			level: x,
 		};
-		obj.filename = `logs/${x}_${tag.toLowerCase()}.log`;
+		obj.filename = `logs/${tag.toLowerCase()}_${x}.log`;
 		return new transports.File(obj);
 	});
 	fileArray.push(GLOBAL_LOG);
