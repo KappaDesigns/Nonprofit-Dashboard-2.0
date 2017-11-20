@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const Logger = require('./createLogger');
 
 module.exports = async function (database) {
@@ -11,6 +12,7 @@ module.exports = async function (database) {
 		{
 			host: process.env.DB_HOST,
 			dialect: 'mysql',
+			operatorsAliases: Op,
 			logging: false,
 			pool: {
 				max: 5,
