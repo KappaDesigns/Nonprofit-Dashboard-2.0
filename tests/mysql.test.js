@@ -1,13 +1,13 @@
 const chai = require('chai');
 const createDatabaseConnection = require('../src/util/mysql');
 const Logger = require('../src/util/createLogger');
-const logger = Logger('mysql', [], true);
+const logger = Logger('mysql', ['debug'], true);
 const expect = chai.expect;
 
 let MYSQL;
 
 before(async function() {
-	MYSQL = await createDatabaseConnection('test');
+	MYSQL = await createDatabaseConnection(process.env.DB_NAME);
 	console.log();
 });
 
