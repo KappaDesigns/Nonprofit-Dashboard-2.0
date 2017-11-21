@@ -51,11 +51,15 @@ module.exports = async function createMYSQLWrapper(database) {
 			},
 		}
 	);
+
+	// Wait for database connection...
 	await sequelize.authenticate().then(function handleConnection() {
 		logger.info(`Succesfully established a connection with database: "${database}"`);
 	}).catch(function handleError(err) {
 		logger.error(`Unable to connect to the database.\nError: ${err}`);
 	});
+	
+	//Append Sequelize Schema types to wrapper.
 	sequelize.types = Sequelize;
 	return sequelize;
 };
