@@ -41,6 +41,8 @@
     "init": "./scripts/heroku.sh",
     "flow": "flow || true",
     "document": "./node_modules/jsdoc/jsdoc.js ./src/ -r -d ./docs/ --readme ./docs/README.md",
+    "app:stage": "git push staging master",
+    "app:production": "git push production master",
     "mysql:create_db": "node ./src/util/createDatabase.js",
     "test:karma": "./scripts/karma_test.sh",
     "test:mocha": "./scripts/mocha_test.sh"
