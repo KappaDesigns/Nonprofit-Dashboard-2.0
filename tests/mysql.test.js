@@ -7,7 +7,7 @@ const expect = chai.expect;
 let MYSQL;
 
 before(async function() {
-	MYSQL = await createDatabaseConnection('test');
+	MYSQL = await createDatabaseConnection(process.env.DB_NAME);
 	console.log();
 });
 

@@ -1,4 +1,3 @@
-//@flow
 const { createLogger, format, transports } = require('winston');
 const { combine, colorize, timestamp, label, printf } = format;
 
