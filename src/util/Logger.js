@@ -1,3 +1,8 @@
+/**
+ * Logger Module
+ * @module util/Logger
+ */
+
 const { createLogger, format, transports } = require('winston');
 const { combine, colorize, timestamp, label, printf } = format;
 
