@@ -1,7 +1,9 @@
 /**
- * @description MYSQL wrapper module. Allows for the client to easily connect to a MYSQL database and create Schema 
- * or easily query the database. This class requires the 
- * {@link module:util/Logger}, {@link https://www.npmjs.com/package/sequelize}, and {@link https://www.npmjs.com/package/dotenv}
+ * @description MYSQL wrapper module. Allows for the client to easily 
+ * connect to a MYSQL database and create Schema or easily query the 
+ * database. This class requires the {@link module:util/Logger|Logger}, 
+ * {@link https://www.npmjs.com/package/sequelize|Sequelize}, and 
+ * {@link https://www.npmjs.com/package/dotenv|Dotenv}
  * 
  * @module util/MYSQL
  * 
@@ -27,7 +29,7 @@ const Op = Sequelize.Op;
  * @param {String} database A string that defines the name of the 
  * database to connect to within MYSQL.
  * @returns {Sequelize:Object} returns a Sequelize Object that has been connected 
- * to a database. See {@link https://www.npmjs.com/package/sequelize}
+ * to a database. See {@link https://www.npmjs.com/package/sequelize|Sequelize}
  * For how to use the authenticated Sequelized object. Also appends
  * Sequelize types to the object to create a short hand to reference
  * Sequelize Schema types.
