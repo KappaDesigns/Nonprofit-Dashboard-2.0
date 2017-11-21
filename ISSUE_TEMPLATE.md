@@ -1,6 +1,6 @@
-# STEP ZERO (ARRAYS START ZERO JOKE HERE)
+# Step Zero (Arrays Start at 0 Joke Here)
 
-ENSURE THAT OUR ISSUE ISN'T A DUPLICATE I KNOW ITS HARD FOLKS BUT IT WILL SAVE ALL OF US TIME!!!!
+Ensure Your Issue Is Not A Duplicate. It Will Save Us All Time!
 
 # How To Format An Issue
 
