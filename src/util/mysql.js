@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const Logger = require('./createLogger');
+const Logger = require('./Logger');
 
 module.exports = async function (database) {
 	const logger = Logger(`db:${database}`, ['error', 'debug']);	

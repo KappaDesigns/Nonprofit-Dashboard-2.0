@@ -1,6 +1,12 @@
 require('dotenv').config();
 const mysql = require('mysql2');
-const Logger = require('./createLogger');
+/**
+ * Logger Module
+ * @module util/Logger
+ * @see module:util/Logger
+ */
+const Logger = require('./Logger');
+
 const logger = Logger('db_creator', ['error','debug']);
 
 if (!process.argv[2]) {

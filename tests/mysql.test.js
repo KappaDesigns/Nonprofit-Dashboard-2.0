@@ -1,6 +1,6 @@
 const chai = require('chai');
 const createDatabaseConnection = require('../src/util/mysql');
-const Logger = require('../src/util/createLogger');
+const Logger = require('../src/util/Logger');
 const logger = Logger('mysql', [], true);
 const expect = chai.expect;
 
