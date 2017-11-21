@@ -40,7 +40,7 @@
     "start": "node app.js",
     "init": "./scripts/heroku.sh",
     "flow": "flow || true",
-    "document": "./node_modules/jsdoc/jsdoc.js ./src/ -r -d ./docs/",
+    "document": "./node_modules/jsdoc/jsdoc.js ./src/ -r -d ./docs/ --readme ./docs/README.md",
     "mysql:create_db": "node ./src/util/createDatabase.js",
     "test:karma": "./scripts/karma_test.sh",
     "test:mocha": "./scripts/mocha_test.sh"

@@ -23,3 +23,7 @@ when starting to design this project
 Kappa Designs is a Nonprofit based out of Clyde Hill / Redmond, WA. Our goal is to "enhance local nonprofit organizations reach online, here at Kappa Designs, 
 we pledge to protect and further the goals of these nonprofits, by creating a larger, more connected community." Kappa Designs was founded in 2016 by two 
 high school Sophmores, Jack and Evan.
+
+# Documentation
+
+Documentation work here.
