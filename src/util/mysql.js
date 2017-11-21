@@ -10,10 +10,6 @@
  * @requires Dotenv
  */
 
-require('dotenv').config();
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-
 /**
  * @private
  * @description Logger instance
@@ -21,11 +17,15 @@ const Op = Sequelize.Op;
  */
 const Logger = require('./Logger');
 
+require('dotenv').config();
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 /**
+ * @async
  * @description Creates a MYSQL Wrapper using the Sequelize library
  * @param {String} database A string that defines the name of the 
  * database to connect to within MYSQL.
- * @async
  * @returns {Sequelize:Object} returns a Sequelize Object that has been connected 
  * to a database. See {@link https://www.npmjs.com/package/sequelize}
  * For how to use the authenticated Sequelized object. Also appends
