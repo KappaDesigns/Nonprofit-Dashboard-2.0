@@ -26,7 +26,7 @@ const Logger = require('./Logger');
  * @param {String} database A string that defines the name of the 
  * database to connect to within MYSQL.
  * @async
- * @returns {Object} returns a Sequelize Object that has been connected 
+ * @returns {Sequelize:Object} returns a Sequelize Object that has been connected 
  * to a database. See {@link https://www.npmjs.com/package/sequelize}
  * For how to use the authenticated Sequelized object. Also appends
  * Sequelize types to the object to create a short hand to reference
