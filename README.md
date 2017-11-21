@@ -15,6 +15,9 @@ their websites, as well as creating some ease of access for non-tech employees t
 stopping by and reading up on our labor of love!
 - Kappa Designs
 
+P.S: Feel free to read our notes file in the root of the project if anyone is interested in a really skimmpy description of what was running through my mind at 2am
+when starting to design this project
+
 # Who We Are?
 
 Kappa Designs is a Nonprofit based out of Clyde Hill / Redmond, WA. Our goal is to "enhance local nonprofit organizations reach online, here at Kappa Designs, 
