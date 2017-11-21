@@ -11,7 +11,9 @@ help to accomplish our mission - see http://kappadesigns.org for more - because 
 project I wrote in Node during Sophmore year of high school. Now, I am to redesign the original concept of this dashboard, which allows for google doc style editing of
 webpages, creating events, updating blog posts, and many other standard website management functions, while building in specific plugins for certain nonprofits. The community
 we hope to build around this project are other developers involved in nonprofits who can help to suggest features that would make it easier for dev teams to maintain
-their websites, as well as creating some ease of access for non-tech employees to manage and navigate their websites and other data pertaining to their site. 
+their websites, as well as creating some ease of access for non-tech employees to manage and navigate their websites and other data pertaining to their site. Thank you for
+stopping by and reading up on our labor of love!
+- Kappa Designs
 
 # Who We Are?
 
