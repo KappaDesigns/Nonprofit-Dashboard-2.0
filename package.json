@@ -37,10 +37,11 @@
   },
   "scripts": {
     "start": "node app.js",
+    "init": "./scripts/heroku.sh",
     "flow": "flow || true",
     "mysql:create_db": "node ./src/util/createDatabase.js",
-    "test:karma": "(./node_modules/.bin/eslint ./src/ ./tests && karma start karma.conf.js) || true",
-    "test:mocha": "(./node_modules/.bin/eslint ./src/ ./tests && ./node_modules/mocha/bin/mocha tests/*.test.js) || true"
+    "test:karma": "./scripts/karma_test.sh",
+    "test:mocha": "./scripts/mocha_test.sh"
   },
   "repository": {
     "type": "git",

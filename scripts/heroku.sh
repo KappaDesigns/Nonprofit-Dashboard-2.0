@@ -1,0 +1,1 @@
+git remote add heroku https://git.heroku.com/kappa-dashboard.git
