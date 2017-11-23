@@ -26,6 +26,7 @@ describe('Site Test Suite', function() {
 			await Site.editPage(data, path.resolve(__dirname, '../site', 'test.html'), {
 				firstName: 'test',
 				email: 'test@test.com',
+				message: 'test',
 			});
 			done(null, data);
 		});

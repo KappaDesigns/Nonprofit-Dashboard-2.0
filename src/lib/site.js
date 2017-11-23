@@ -128,15 +128,17 @@ async function saveFile(data, filePath, user) {
 			//add to tree
 			logger.info('Adding...');
 			try {
-				// await index.addByPath(filePath);
+				filePath = localizePath(filePath);
+				logger.debug(filePath);
+				await index.addByPath(filePath.trim());
 				await index.write();
 				const oID = await index.writeTree();
 				const head = await Git.Reference.nameToId(repo, 'HEAD');
 				const parent = await repo.getCommit(head);
 				
 				// commit to repo
-				const id = await commit(repo, 'test', oID, parent, user);
-				logger.info(id);
+				const id = await commit(repo, oID, parent, user);
+				logger.info(`Commit id: ${id}`);
 				resolve();
 			} catch(err) {
 				logger.error('Error: ' + err);
@@ -146,7 +148,26 @@ async function saveFile(data, filePath, user) {
 	});
 }
 
-async function commit(repo, message, oID, parent, user) {
+function localizePath(filePath) {
+	let subpaths = filePath.split('/');
+	for (let i = 0; i < subpaths.length; i++) {
+		if (subpaths[i] == 'site') {
+			subpaths.splice(0, i + 1);
+			break;
+		}
+	}
+	filePath = '';
+	for (let i = 0; i < subpaths.length; i++) {
+		if (i != 0) {
+			filePath += '/' + subpaths[i];
+		} else {
+			filePath += subpaths[i];
+		}
+	}
+	return filePath;
+}
+
+async function commit(repo, oID, parent, user) {
 	logger.info('Commiting...');
 	const config = await util.readConfig();
 	const date = new Date();
@@ -169,7 +190,7 @@ async function commit(repo, message, oID, parent, user) {
 		'HEAD',
 		author, 
 		committer, 
-		message, 
+		user.message, 
 		oID, 
 		[parent]
 	);
