@@ -1,51 +1,99 @@
 /**
- * spec
- * 1. init
- * 	pull repo
- * 	create asset map
- * 		keys: file name
- * 		values: read file function
- * 	start 24 hour dev updater
- * 	
- * 2. force update
- * 	forcefully updates website from the github repo of the true website
+ * @description implementation of the how the site is edited via
+ * the front end editor. Also handles publication of the site
+ * commits and changes to the site, and updates the git hub repo
+ * of the actaul site so that developers can see the change made
+ * by those who are not developers. Built using 
+ * {@link https://www.npmjs.com/package/nodegit|NodeGit}
  * 
- * 3. updatePage
- * 	takes in the html of an admin panel page
- * 	parse to ignore the data-admin-only attributes
- * 	write to file
- * 	commit changes
+ * @module lib/Site
  * 
- * 4. publish
- * 	pushes current changes to github
  * 
- * 5. revert
- * 	can revert back to a given commit id
- *  reverts back a commit if no commit id given
- * 	can revert back to previous
- * 
- * 6. createTimer
- * 	pulls repo every 24 hours checking for dev changes by a web team
- * 
+ * @requires NodeGit
+ * @requires module:util/Logger
  */
 
-const daytime = 1000 * 60 * 60 * 24; //miliseconds in 1 day
+/**
+ * NodeGit
+ */
+const Git = require('nodegit');
+const path = require('path');
 
-async function init() {
-	await pullRepo();
-	initTimer();
+const Logger = require('../util/Logger');
+
+const sitePath = path.resolve(__dirname, '../../site');
+const logger = Logger('Site.js', ['error']);
+
+/**
+ * @description emulates a git pull to update the site
+ * with any recent changes made by the development team
+ * @param {User:Object} user takes in a user object.
+ * @see module:lib/User
+ */
+async function pullRepo(user) {
+	logger.info('Pulling repository...');
+
+	// opens repository through file system
+	logger.info('Opening...');
+	let repo;
+	try {
+		repo = await Git.Repository.open(sitePath);
+	} catch(err) {
+		logger.error('Error opening local git repository. This should not happen.'
+					+ `Is /site missing? Is /site/.git missing?\nError:${err}`);
+		throw err;
+	}
+
+	// creates FETCH_HEAD ref for merge
+	logger.info('Creating FETCH_HEAD ref');
+	let headRef = await createHeadReference(repo);
+
+	// fetches most recent changes
+	logger.info('Fetching...');
+	try {
+		await repo.fetch('origin');
+	} catch (err) {
+		logger.error(`Error fetching git.\nError:${err}`);
+		return err;
+	}
+
+	// merges local master with fetched changes
+	logger.info('Merging..');
+	const date = new Date();
+	const signature = Git.Signature.create(
+		user.firstName, 
+		user.email, 
+		date.getTime(), 
+		date.getTimezoneOffset()
+	);
+	const mergePref = Git.Merge.PREFERENCE.NONE;
+	logger.debug('master', headRef, signature, mergePref);
+	try {
+		await repo.mergeBranches('master', headRef, signature, mergePref);
+	} catch (err) {
+		logger.error(`Error merging local git and development git \nError:${err}`);
+		throw err;
+	}
 }
 
-function pullRepo() {
-
+async function createHeadReference(repo) {
+	try {
+		let ref = await Git.Reference.lookup(repo, 'FETCH_HEAD');
+		return ref;
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
 }
 
 function updateFile() {
 
 }
 
-function initTimer() {
-	setTimeout(function createTimmer() {
-
-	}, daytime);
-}
+module.exports = {
+	editPage: updateFile,
+	update: pullRepo,
+	// publish: publish,
+	// revert: revert,
+	// saveChanges: commit,
+};
