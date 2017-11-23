@@ -44,10 +44,6 @@ async function pullRepo(user) {
 		throw err;
 	}
 
-	// creates FETCH_HEAD ref for merge
-	logger.info('Creating FETCH_HEAD ref');
-	let headRef = await createHeadReference(repo);
-
 	// fetches most recent changes
 	logger.info('Fetching...');
 	try {
@@ -56,6 +52,10 @@ async function pullRepo(user) {
 		logger.error(`Error fetching git.\nError:${err}`);
 		return err;
 	}
+
+	// creates FETCH_HEAD ref for merge
+	logger.info('Creating FETCH_HEAD ref');
+	let headRef = await createHeadReference(repo);
 
 	// merges local master with fetched changes
 	logger.info('Merging..');
@@ -67,7 +67,10 @@ async function pullRepo(user) {
 		date.getTimezoneOffset()
 	);
 	const mergePref = Git.Merge.PREFERENCE.NONE;
-	logger.debug('master', headRef, signature, mergePref);
+	logger.debug('master');
+	logger.debug(headRef);
+	logger.debug(signature);
+	logger.debug(mergePref);
 	try {
 		await repo.mergeBranches('master', headRef, signature, mergePref);
 	} catch (err) {
