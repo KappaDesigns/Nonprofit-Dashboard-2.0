@@ -1,4 +1,8 @@
 {
     "url": "http://kappadesigns.org/",
-    "gitURL": "https://github.com/ecoulson/Kappa-Designs-Home.git"
+    "gitURL": "https://github.com/ecoulson/Kappa-Designs-Home.git",
+    "git": {
+        "firstName": "Kappa-Admin",
+        "email": "ecoulson@github.com"
+    }
 }

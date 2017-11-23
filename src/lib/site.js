@@ -18,7 +18,8 @@
  */
 const Git = require('nodegit');
 const path = require('path');
-
+const fs = require('fs');
+const util = require('../util');
 const Logger = require('../util/Logger');
 
 const sitePath = path.resolve(__dirname, '../../site');
@@ -29,20 +30,12 @@ const logger = Logger('Site.js', ['error']);
  * with any recent changes made by the development team
  * @param {User:Object} user takes in a user object.
  * @see module:lib/User
+ * @async
  */
 async function pullRepo(user) {
 	logger.info('Pulling repository...');
 
-	// opens repository through file system
-	logger.info('Opening...');
-	let repo;
-	try {
-		repo = await Git.Repository.open(sitePath);
-	} catch(err) {
-		logger.error('Error opening local git repository. This should not happen.'
-					+ `Is /site missing? Is /site/.git missing?\nError:${err}`);
-		throw err;
-	}
+	const repo = await openRepository(sitePath);	
 
 	// fetches most recent changes
 	logger.info('Fetching...');
@@ -67,10 +60,6 @@ async function pullRepo(user) {
 		date.getTimezoneOffset()
 	);
 	const mergePref = Git.Merge.PREFERENCE.NONE;
-	logger.debug('master');
-	logger.debug(headRef);
-	logger.debug(signature);
-	logger.debug(mergePref);
 	try {
 		await repo.mergeBranches('master', headRef, signature, mergePref);
 	} catch (err) {
@@ -79,6 +68,11 @@ async function pullRepo(user) {
 	}
 }
 
+/**
+ * @async
+ * @description creates a reference to the head where the git was most recently fetched
+ * @param {Repository:Object} repo node git repository object.
+ */
 async function createHeadReference(repo) {
 	try {
 		let ref = await Git.Reference.lookup(repo, 'FETCH_HEAD');
@@ -89,14 +83,110 @@ async function createHeadReference(repo) {
 	}
 }
 
-function updateFile() {
+/**
+ * @description opens the local repository saved to the machine
+ * @param {String} sitePath path to local site git repo
+ * @async
+ */
+async function openRepository(sitePath) {
+	return new Promise(async function handlePromise(resolve) {
+		logger.info('Opening...');
+		let repo;
+		try {
+			repo = await Git.Repository.open(sitePath);
+			return resolve(repo);
+		} catch(err) {
+			logger.error('Error opening local git repository. This should not happen.'
+						+ `Is /site missing? Is /site/.git missing?\nError:${err}`);
+			throw err;
+		}
+	});
+}
+
+/**
+ * @description Saves the updated file from the web ui to the server git
+ * file and adds and commits file to recent changes
+ * @param {String} data the html to write and update
+ * @param {String} filePath the path at which to update the file
+ * @async
+ */
+async function saveFile(data, filePath, user) {
+	return new Promise(function handlePromise(resolve, reject) {
+		fs.writeFile(filePath, data, 'utf-8', async function handleWrite(err) {
+			if (err) {
+				logger.error(`Error writing to file at ${filePath}\nError: ${err}`);
+				throw err;
+			}
+			logger.info(`Successfully wrote to ${filePath}`);
+			//read config
+
+			// open local repo
+			logger.info('Opening...');
+			const repo = await openRepository(sitePath);
+			const index = await repo.refreshIndex();
+			
+			//add to tree
+			logger.info('Adding...');
+			try {
+				// await index.addByPath(filePath);
+				await index.write();
+				const oID = await index.writeTree();
+				const head = await Git.Reference.nameToId(repo, 'HEAD');
+				const parent = await repo.getCommit(head);
+				
+				// commit to repo
+				const id = await commit(repo, 'test', oID, parent, user);
+				logger.info(id);
+				resolve();
+			} catch(err) {
+				logger.error('Error: ' + err);
+				return reject(err);
+			}
+		});
+	});
+}
+
+async function commit(repo, message, oID, parent, user) {
+	logger.info('Commiting...');
+	const config = await util.readConfig();
+	const date = new Date();
+
+	const author = Git.Signature.create(
+		user.firstName, 
+		user.email, 
+		date.getTime(), 
+		date.getTimezoneOffset()
+	);
+
+	const committer = Git.Signature.create(
+		config.git.firstName,
+		config.git.email,
+		date.getTime(),
+		date.getTimezoneOffset()
+	);
+
+	return await repo.createCommit(
+		'HEAD',
+		author, 
+		committer, 
+		message, 
+		oID, 
+		[parent]
+	);
+}
+
+function push() {
+
+}
+
+function revert() {
 
 }
 
 module.exports = {
-	editPage: updateFile,
+	editPage: saveFile,
 	update: pullRepo,
-	// publish: publish,
-	// revert: revert,
-	// saveChanges: commit,
+	publish: push,
+	revert: revert,
+	saveChanges: commit,
 };
