@@ -224,8 +224,27 @@ function push() {
 
 }
 
-function revert(id) {
 
+/**
+ * @description reverts the git branch to the requested commit
+ * @param {String} hash represents the hash of the commit
+ * @async
+ */
+async function revert(hash) {
+	return new Promise(async function handlePromise(resolve, reject) {
+		try {
+			logger.info('Reverting...');
+			let repo = await openRepository(sitePath);
+			let toRevert = await repo.getCommit(hash);
+			//toRevert: Undefined
+			logger.debug(toRevert);
+			await Git.Revert.revert(repo, toRevert);
+			return resolve();
+		} catch(err) {
+			logger.error(err);
+			return reject(err);
+		}
+	});
 }
 
 module.exports = {
