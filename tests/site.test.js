@@ -18,7 +18,7 @@ describe('Site Test Suite', function() {
 	});
 
 	it('Should push edits to the git repo', (done) => {
-		fs.readFile('./site/index.html', 'utf-8', async function handleRead(err, data) {
+		fs.readFile('./site/test2.html', 'utf-8', async function handleRead(err, data) {
 			if (err) {
 				logger.error(err);
 				throw err;

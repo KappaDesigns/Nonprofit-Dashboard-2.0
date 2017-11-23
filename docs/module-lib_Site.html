@@ -221,7 +221,241 @@ by those who are not developers. Built using
     
 
     
-    <h4 class="name" id="~createHeadReference"><span class="type-signature">(async, inner) </span>createHeadReference<span class="signature">(repo)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~commit"><span class="type-signature">(async, inner) </span>commit<span class="signature">(repo, oID, parent, user)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    commits recent edits and changes to the
+local repository
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>repo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Repository:Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">git repository</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Oid:Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Oid of commit prior</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Commit:Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">parent commit</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">User:Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">takes in a user object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line194">line 194</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>module:lib/User</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the new commit id number
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~createHeadReference"><span class="type-signature">(async, inner) </span>createHeadReference<span class="signature">(repo)</span><span class="type-signature"> &rarr; {Reference:Object}</span></h4>
     
 
     
@@ -322,7 +556,7 @@ by those who are not developers. Built using
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line76">line 76</a>
+        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -345,6 +579,29 @@ by those who are not developers. Built using
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    returns a nodegit reference that
+refers to the FETCH_HEAD
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Reference:Object</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -356,7 +613,166 @@ by those who are not developers. Built using
     
 
     
-    <h4 class="name" id="~openRepository"><span class="type-signature">(async, inner) </span>openRepository<span class="signature">(sitePath)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~localizePath"><span class="type-signature">(inner) </span>localizePath<span class="signature">(filePath)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    takes the global file path of a file within
+the local site stored and resolves the string to pertain to the ./site
+dir as the root of the path
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filePath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">path to file</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line164">line 164</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    returns localized string to the ./site root
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~openRepository"><span class="type-signature">(async, inner) </span>openRepository<span class="signature">(sitePath)</span><span class="type-signature"> &rarr; {Repository:Object}</span></h4>
     
 
     
@@ -457,7 +873,7 @@ by those who are not developers. Built using
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line91">line 91</a>
+        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -480,6 +896,29 @@ by those who are not developers. Built using
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    returns a nodegit repository 
+after opening so that commands can be run on top of it
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Repository:Object</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -634,7 +1073,7 @@ with any recent changes made by the development team
     
 
     
-    <h4 class="name" id="~saveFile"><span class="type-signature">(async, inner) </span>saveFile<span class="signature">(data, filePath)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~saveFile"><span class="type-signature">(async, inner) </span>saveFile<span class="signature">(data, filePath, user)</span><span class="type-signature"></span></h4>
     
 
     
@@ -722,6 +1161,29 @@ file and adds and commits file to recent changes
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">User:Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">takes in a user object</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -759,12 +1221,19 @@ file and adds and commits file to recent changes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line113">line 113</a>
+        <a href="lib_site.js.html">lib/site.js</a>, <a href="lib_site.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>module:lib/User</li>
+        </ul>
+    </dd>
     
 
     
@@ -809,7 +1278,7 @@ file and adds and commits file to recent changes
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Nov 22 2017 23:26:45 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 23 2017 00:19:32 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
