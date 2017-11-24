@@ -224,23 +224,29 @@ function push() {
 
 }
 
-
 /**
  * @description reverts the git branch to the requested commit
  * @param {String} hash represents the hash of the commit
  * @async
  */
 async function revert(hash) {
+	// hash = 8235979344b36ef5d1d9e38b134d5a76101dc2ef
 	return new Promise(async function handlePromise(resolve, reject) {
 		try {
 			logger.info('Reverting...');
 			let repo = await openRepository(sitePath);
 			let toRevert = await repo.getCommit(hash);
-			//toRevert: Undefined
-			logger.debug(toRevert);
-			await Git.Revert.revert(repo, toRevert);
+
+			//test
+			logger.debug((await repo.getCommit('8235979344b36ef5d1d9e38b134d5a76101dc2ef')).sha()); //logs the sha of the commit
+			logger.debug(toRevert); // logs undefined
+			logger.debug(toRevert.sha()); // logs the sha of the commit?????
+
+			await Git.Revert.revert(repo, toRevert); // error must be here? repo is defined, toRevert is undefined but i can run methods on it????
+			logger.debug('here'); // does not reach this piece of code
 			return resolve();
 		} catch(err) {
+			// throws error undefined
 			logger.error(err);
 			return reject(err);
 		}

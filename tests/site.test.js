@@ -33,7 +33,7 @@ describe('Site Test Suite', function() {
 	});
 
 	it('Should revert back to a commit', async (done) => {
-		await Site.revert('03c708e7e96192d04ede03f6ad8c39c6801a59dd');
+		await Site.revert('8235979344b36ef5d1d9e38b134d5a76101dc2ef');
 		done();
 	});
 });
