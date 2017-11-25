@@ -259,6 +259,8 @@ async function push() {
  * @description handles github credentials when publishing to repo
  * @param {Object} config app configuration object
  * @async
+ * @returns {Array.<String>} returns an array containing the username
+ * and password of the bot
  */
 async function handleCreds(config) {
 	return new Promise(function handlePromise(resolve) {
@@ -277,6 +279,9 @@ async function handleCreds(config) {
  * @param {Object} config app configuration object
  * @param {String} str string to decrypt
  * @param {Function} next callback when finished decrypting
+ * @returns {String} returns the decrypted string to the
+ * callback
+ * @async
  */
 function decrypt(config, str, next) {
 	const decipher = Crypto.createDecipher('aes192', config.secret);
