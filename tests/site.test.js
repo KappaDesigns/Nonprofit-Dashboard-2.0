@@ -19,7 +19,7 @@ describe('Site Test Suite', function() {
 	});
 
 	it('Should push edits to the git repo', (done) => {
-		fs.readFile('./site/test2.html', 'utf-8', async function handleRead(err, data) {
+		fs.readFile('./site/input.html', 'utf-8', async function handleRead(err, data) {
 			if (err) {
 				logger.error(err);
 				throw err;
@@ -35,10 +35,11 @@ describe('Site Test Suite', function() {
 
 	it('Should push changes to the github repo', async () => {
 		await Site.publish();
-	});
-
-	it('Should revert back to a commit', async () => {
-		await Site.revert('606fb7f044b11ccabf343b8a80ab0c39cb0db2a7');
 		expect(true).to.equal(true);
 	});
+
+	// it('Should revert back to a commit', async () => {
+	// 	await Site.revert('606fb7f044b11ccabf343b8a80ab0c39cb0db2a7');
+	// 	expect(true).to.equal(true);
+	// });
 });

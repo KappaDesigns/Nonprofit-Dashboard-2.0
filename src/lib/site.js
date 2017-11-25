@@ -21,6 +21,7 @@ const path = require('path');
 const fs = require('fs');
 const util = require('../util');
 const Logger = require('../util/Logger');
+const Crypto = require('crypto');
 
 const sitePath = path.resolve(__dirname, '../../site');
 const logger = Logger('Site.js', ['error']);
@@ -34,13 +35,13 @@ const logger = Logger('Site.js', ['error']);
  */
 async function pullRepo(user) {
 	logger.info('Pulling repository...');
-
-	const repo = await openRepository(sitePath);	
+	const config = await util.readConfig();
+	const repo = await openRepository();	
 
 	// fetches most recent changes
 	logger.info('Fetching...');
 	try {
-		await repo.fetch('origin');
+		await repo.fetch(config.git.remote);
 	} catch (err) {
 		logger.error(`Error fetching git.\nError:${err}`);
 		return err;
@@ -50,7 +51,7 @@ async function pullRepo(user) {
 	logger.info('Creating FETCH_HEAD ref');
 	let headRef = await createHeadReference(repo);
 
-	// merges local master with fetched changes
+	// merges local production branch with fetched changes
 	logger.info('Merging..');
 	const date = new Date();
 	const signature = Git.Signature.create(
@@ -61,7 +62,7 @@ async function pullRepo(user) {
 	);
 	const mergePref = Git.Merge.PREFERENCE.NONE;
 	try {
-		await repo.mergeBranches('master', headRef, signature, mergePref);
+		await repo.mergeBranches(config.git.branch, headRef, signature, mergePref);
 	} catch (err) {
 		logger.error(`Error merging local git and development git \nError:${err}`);
 		throw err;
@@ -92,7 +93,7 @@ async function createHeadReference(repo) {
  * after opening so that commands can be run on top of it
  * @async
  */
-async function openRepository(sitePath) {
+async function openRepository() {
 	return new Promise(async function handlePromise(resolve) {
 		logger.info('Opening...');
 		let repo;
@@ -128,7 +129,7 @@ async function saveFile(data, filePath, user) {
 
 			// open local repo
 			logger.info('Opening...');
-			const repo = await openRepository(sitePath);
+			const repo = await openRepository();
 			const index = await repo.refreshIndex();
 			
 			//add to tree
@@ -220,8 +221,79 @@ async function commit(repo, oID, parent, user) {
 	);
 }
 
+/**
+ * @description publishes site to the configured 
+ * publish remote and branch of the repo
+ * @async
+ */
 async function push() {
-	
+	return new Promise(async function handlePromise(resolve, reject) {
+		const config = await util.readConfig();
+		const repo = await openRepository();
+		try {
+			const remote = await repo.getRemote(config.git.remote);
+			remote.push(
+				[`refs/heads/master:refs/heads/${config.git.branch}`],
+				{
+					callbacks: {
+						credentials: async () => {
+							const creds = await handleCreds(config);
+							return Git.Cred.userpassPlaintextNew(
+								creds[0], 
+								creds[1],
+							);
+						},
+					},
+				}
+			);
+			logger.info('Pushed repo to github.');
+			return resolve();
+		} catch(err) {
+			logger.error(`${err}`);
+			return reject(err);
+		}
+	});
+}
+
+/**
+ * @description handles github credentials when publishing to repo
+ * @param {Object} config app configuration object
+ * @async
+ */
+async function handleCreds(config) {
+	return new Promise(function handlePromise(resolve) {
+		const pass = config.git.password;
+		const user = config.git.username;
+		decrypt(config, user, function handleUsername(username) {
+			decrypt(config, pass, function hanldePassword(password) {
+				return resolve([username, password]);
+			});
+		});
+	});
+}
+
+/**
+ * 
+ * @param {Object} config app configuration object
+ * @param {String} str string to decrypt
+ * @param {Function} next callback when finished decrypting
+ */
+function decrypt(config, str, next) {
+	const decipher = Crypto.createDecipher('aes192', config.secret);
+	let decrypted = '';
+
+	decipher.on('readable', function handleRead() {
+		const data = decipher.read();
+		if (data) {
+			decrypted += data.toString('utf8');
+		}
+	});
+
+	decipher.on('end', function handleClose() {
+		return next(decrypted);
+	});
+	decipher.write(str, 'hex');
+	decipher.end();
 }
 
 /**
@@ -232,16 +304,21 @@ async function push() {
 async function revert(hash) {
 	return new Promise(async function handlePromise(resolve, reject) {
 		try {
+			const config = await util.readConfig();
 			logger.info('Reverting...');
 			let repo = await openRepository(sitePath);
 			let toRevert = await repo.getCommit(hash);
 			const TYPE = Git.Reset.TYPE.HARD;
 			const opts = new Git.CheckoutOptions();
-			let res = await Git.Reset.reset(repo, toRevert, TYPE, opts, 'master');
-			console.log(res);
+			await Git.Reset.reset(
+				repo, 
+				toRevert, 
+				TYPE, 
+				opts, 
+				config.git.branch
+			);
 			return resolve();
 		} catch(err) {
-			console.log(err);
 			logger.error(`${err}`);
 			return reject(err);
 		}

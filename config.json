@@ -1,8 +1,13 @@
 {
     "url": "http://kappadesigns.org/",
-    "gitURL": "https://github.com/ecoulson/Kappa-Designs-Home.git",
+	"gitURL": "https://github.com/ecoulson/Kappa-Designs-Home.git",
+	"secret": "ecn6j2xIiseYyXjWi03p",
     "git": {
-        "firstName": "Kappa-Admin",
-        "email": "ecoulson@github.com"
+        "firstName": "Kappa Admin",
+        "email": "kappadashboardbot@gmail.com",
+		"username": "af35aed90b1b101401242b8e5c4db1bd",
+		"password": "6952cb9abe9b25ba144e861e10ffe3ca",
+		"branch": "master",
+		"remote": "origin"
     }
 }

@@ -6,6 +6,11 @@ const logger = Logger('lib.js', ['error', 'debug']);
 
 const configPath = path.resolve(__dirname, '../', '../', 'config.json');
 
+/**
+ * @description reads the config and returns a javascript object
+ * @returns {Object} represents the config
+ * @async
+ */
 function readConfig() {
 	return new Promise(function handlePromise(resolve) {
 		fs.readFile(configPath, 'utf-8', function handleRead(err, data) {
