@@ -6,6 +6,7 @@ const expect = chai.expect;
 const fs = require('fs');
 const path = require('path');
 
+// TODO improve the tests
 describe('Site Test Suite', function() {
 	it('Should sync the local site with git', async () => {
 		logger.info('started pull request');
@@ -30,6 +31,10 @@ describe('Site Test Suite', function() {
 			});
 			done(null, data);
 		});
+	});
+
+	it('Should push changes to the github repo', async () => {
+		await Site.publish();
 	});
 
 	it('Should revert back to a commit', async () => {

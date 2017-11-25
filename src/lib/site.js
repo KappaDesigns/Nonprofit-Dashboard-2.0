@@ -220,8 +220,8 @@ async function commit(repo, oID, parent, user) {
 	);
 }
 
-function push() {
-
+async function push() {
+	
 }
 
 /**
@@ -235,7 +235,7 @@ async function revert(hash) {
 			logger.info('Reverting...');
 			let repo = await openRepository(sitePath);
 			let toRevert = await repo.getCommit(hash);
-			const TYPE = Git.Reset.TYPE.SOFT;
+			const TYPE = Git.Reset.TYPE.HARD;
 			const opts = new Git.CheckoutOptions();
 			let res = await Git.Reset.reset(repo, toRevert, TYPE, opts, 'master');
 			console.log(res);
