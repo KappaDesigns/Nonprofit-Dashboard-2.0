@@ -304,19 +304,17 @@ function decrypt(config, str, next) {
 async function revert(hash) {
 	return new Promise(async function handlePromise(resolve, reject) {
 		try {
-			const config = await util.readConfig();
 			let repo = await openRepository(sitePath);
+
 			logger.info('Setting new head...');
 			let newHead = await repo.getCommit(hash);
-			const TYPE = Git.Reset.TYPE.HARD;
-			const opts = new Git.CheckoutOptions();
-			logger.info('Reseting...');
-			await Git.Reset.reset(
-				repo, 
-				newHead, 
-				TYPE, 
-				opts, 
-				config.git.branch
+			const opts = new Git.RevertOptions();
+
+			logger.info('Reverting...');
+			await Git.Revert.revert(
+				repo,
+				newHead,
+				opts,
 			);
 			return resolve();
 		} catch(err) {
