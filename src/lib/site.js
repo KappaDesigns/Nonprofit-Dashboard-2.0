@@ -53,12 +53,9 @@ async function pullRepo(user) {
 
 	// merges local production branch with fetched changes
 	logger.info('Merging..');
-	const date = new Date();
-	const signature = Git.Signature.create(
+	const signature = Git.Signature.now(
 		user.firstName, 
 		user.email, 
-		date.getTime(), 
-		date.getTimezoneOffset()
 	);
 	const mergePref = Git.Merge.PREFERENCE.NONE;
 	try {
@@ -194,20 +191,15 @@ function localizePath(filePath) {
 async function commit(repo, oID, parent, message) {
 	logger.info('Commiting...');
 	const config = await util.readConfig();
-	const date = new Date();
 
-	const author = Git.Signature.create(
+	const author = Git.Signature.now(
 		config.git.firstName, 
 		config.git.email, 
-		date.getTime(), 
-		date.getTimezoneOffset()
 	);
 
-	const committer = Git.Signature.create(
+	const committer = Git.Signature.now(
 		config.git.firstName,
 		config.git.email,
-		date.getTime(),
-		date.getTimezoneOffset()
 	);
 
 	return await repo.createCommit(
