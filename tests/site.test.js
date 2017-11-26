@@ -34,6 +34,7 @@ describe('Site Test Suite', function() {
 	});
 
 	it('Should push changes to the github repo', async () => {
+		this.timeout(10000);
 		await Site.publish();
 		expect(true).to.equal(true);
 	});
