@@ -187,19 +187,18 @@ function localizePath(filePath) {
  * @param {nodegit.Repository:Object} repo git repository
  * @param {nodegit.Oid:Object} oID Oid of commit prior
  * @param {nodegit.Commit:Object} parent parent commit
- * @param {User:Object} user takes in a user object
+ * @param {String} message takes in a user's commit message
  * @returns {Number} the new commit id number
- * @see module:lib/User 
  * @async
  */
-async function commit(repo, oID, parent, user) {
+async function commit(repo, oID, parent, message) {
 	logger.info('Commiting...');
 	const config = await util.readConfig();
 	const date = new Date();
 
 	const author = Git.Signature.create(
-		user.firstName, 
-		user.email, 
+		config.git.firstName, 
+		config.git.email, 
 		date.getTime(), 
 		date.getTimezoneOffset()
 	);
@@ -215,7 +214,7 @@ async function commit(repo, oID, parent, user) {
 		'HEAD',
 		author, 
 		committer, 
-		user.message, 
+		message, 
 		oID, 
 		[parent]
 	);
@@ -335,10 +334,24 @@ async function revert(hash) {
 	});
 }
 
+/**
+ * @description gets the head commit of the repository
+ * @returns {nodegit.Commit:Object} returns a nodegit commit object
+ * @async
+ */
+async function getHeadCommit() {
+	return new Promise(async function handlePromise(resolve) {
+		const repo = await openRepository();
+		const commit = await repo.getHeadCommit();
+		resolve(commit);
+	});
+}
+
 module.exports = {
 	editPage: saveFile,
 	update: pullRepo,
 	publish: push,
 	revert: revert,
 	saveChanges: commit,
+	getHeadCommit: getHeadCommit,
 };

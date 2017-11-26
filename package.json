@@ -16,6 +16,8 @@
     "flow-bin": "^0.59.0",
     "mysql2": "^1.5.0",
     "nodegit": "^0.20.3",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "sequelize": "^4.22.12",
     "winston": "^3.0.0-rc1"
   },
