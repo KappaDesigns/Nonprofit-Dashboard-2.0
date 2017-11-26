@@ -72,8 +72,8 @@ async function pullRepo(user) {
 /**
  * @async
  * @description creates a reference to the head where the git was most recently fetched
- * @param {Repository:Object} repo node git repository object.
- * @returns {Reference:Object} returns a nodegit reference that
+ * @param {nodegit.Repository:Object} repo node git repository object.
+ * @returns {nodegit.Reference:Object} returns a nodegit reference that
  * refers to the FETCH_HEAD
  */
 async function createHeadReference(repo) {
@@ -89,7 +89,7 @@ async function createHeadReference(repo) {
 /**
  * @description opens the local repository saved to the machine
  * @param {String} sitePath path to local site git repo
- * @returns {Repository:Object} returns a nodegit repository 
+ * @returns {nodegit.Repository:Object} returns a nodegit repository 
  * after opening so that commands can be run on top of it
  * @async
  */
@@ -184,9 +184,9 @@ function localizePath(filePath) {
 /**
  * @description commits recent edits and changes to the
  * local repository
- * @param {Repository:Object} repo git repository
- * @param {Oid:Object} oID Oid of commit prior
- * @param {Commit:Object} parent parent commit
+ * @param {nodegit.Repository:Object} repo git repository
+ * @param {nodegit.Oid:Object} oID Oid of commit prior
+ * @param {nodegit.Commit:Object} parent parent commit
  * @param {User:Object} user takes in a user object
  * @returns {Number} the new commit id number
  * @see module:lib/User 
@@ -231,8 +231,9 @@ async function push() {
 		const config = await util.readConfig();
 		const repo = await openRepository();
 		try {
+			logger.info(`getting specified remote ${config.git.remote}`);
 			const remote = await repo.getRemote(config.git.remote);
-			remote.push(
+			await remote.push(
 				[`refs/heads/master:refs/heads/${config.git.branch}`],
 				{
 					callbacks: {
@@ -264,6 +265,7 @@ async function push() {
  */
 async function handleCreds(config) {
 	return new Promise(function handlePromise(resolve) {
+		logger.info('handling git hub credentials...');
 		const pass = config.git.password;
 		const user = config.git.username;
 		decrypt(config, user, function handleUsername(username) {
@@ -284,6 +286,7 @@ async function handleCreds(config) {
  * @async
  */
 function decrypt(config, str, next) {
+	logger.info('decrypting...');
 	const decipher = Crypto.createDecipher('aes192', config.secret);
 	let decrypted = '';
 
@@ -295,6 +298,7 @@ function decrypt(config, str, next) {
 	});
 
 	decipher.on('end', function handleClose() {
+		logger.info('finished decrypting...');
 		return next(decrypted);
 	});
 	decipher.write(str, 'hex');
@@ -310,14 +314,15 @@ async function revert(hash) {
 	return new Promise(async function handlePromise(resolve, reject) {
 		try {
 			const config = await util.readConfig();
-			logger.info('Reverting...');
 			let repo = await openRepository(sitePath);
-			let toRevert = await repo.getCommit(hash);
+			logger.info('Setting new head...');
+			let newHead = await repo.getCommit(hash);
 			const TYPE = Git.Reset.TYPE.HARD;
 			const opts = new Git.CheckoutOptions();
+			logger.info('Reseting...');
 			await Git.Reset.reset(
 				repo, 
-				toRevert, 
+				newHead, 
 				TYPE, 
 				opts, 
 				config.git.branch

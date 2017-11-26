@@ -38,8 +38,8 @@ describe('Site Test Suite', function() {
 		expect(true).to.equal(true);
 	});
 
-	// it('Should revert back to a commit', async () => {
-	// 	await Site.revert('606fb7f044b11ccabf343b8a80ab0c39cb0db2a7');
-	// 	expect(true).to.equal(true);
-	// });
+	it('Should revert back to a commit', async () => {
+		await Site.revert('606fb7f044b11ccabf343b8a80ab0c39cb0db2a7');
+		expect(true).to.equal(true);
+	});
 });
