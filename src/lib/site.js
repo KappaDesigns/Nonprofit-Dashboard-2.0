@@ -30,80 +30,36 @@ const logger = Logger('Site.js', ['error']);
  * @description emulates a git pull to update the site
  * with any recent changes made by the development team
  * @param {User:Object} user takes in a user object.
+ * @returns {String} returns the sha of the new head commit
  * @see module:lib/User
  * @async
  */
 async function pullRepo(user) {
-	logger.info('Pulling repository...');
-	const config = await util.readConfig();
-	const repo = await openRepository();	
+	return new Promise(async function handlePromise(resolve, reject) {
+		logger.info('Pulling repository...');
+		const config = await util.readConfig();
+		const repo = await openRepository();	
+	
+		await fetch(repo, config, reject);
+	
+		// creates FETCH_HEAD ref for merge
+		let headRef = await createHeadReference(repo);
+	
+		const signature = createSignature(user);
 
-	// fetches most recent changes
-	logger.info('Fetching...');
-	try {
-		await repo.fetch(config.git.remote);
-	} catch (err) {
-		logger.error(`Error fetching git.\nError:${err}`);
-		return err;
-	}
-
-	// creates FETCH_HEAD ref for merge
-	logger.info('Creating FETCH_HEAD ref');
-	let headRef = await createHeadReference(repo);
-
-	// merges local production branch with fetched changes
-	logger.info('Merging..');
-	const signature = Git.Signature.now(
-		user.firstName, 
-		user.email, 
-	);
-	const mergePref = Git.Merge.PREFERENCE.NONE;
-	try {
-		await repo.mergeBranches(config.git.branch, headRef, signature, mergePref);
-	} catch (err) {
-		logger.error(`Error merging local git and development git \nError:${err}`);
-		throw err;
-	}
-}
-
-/**
- * @async
- * @description creates a reference to the head where the git was most recently fetched
- * @param {nodegit.Repository:Object} repo node git repository object.
- * @returns {nodegit.Reference:Object} returns a nodegit reference that
- * refers to the FETCH_HEAD
- */
-async function createHeadReference(repo) {
-	try {
-		let ref = await Git.Reference.lookup(repo, 'FETCH_HEAD');
-		return ref;
-	} catch(err) {
-		logger.error(err);
-		throw err;
-	}
-}
-
-/**
- * @description opens the local repository saved to the machine
- * @param {String} sitePath path to local site git repo
- * @returns {nodegit.Repository:Object} returns a nodegit repository 
- * after opening so that commands can be run on top of it
- * @async
- */
-async function openRepository() {
-	return new Promise(async function handlePromise(resolve) {
-		logger.info('Opening...');
-		let repo;
+		logger.info('Merging..');
+		const mergePref = Git.Merge.PREFERENCE.NONE;
 		try {
-			repo = await Git.Repository.open(sitePath);
-			return resolve(repo);
-		} catch(err) {
-			logger.error('Error opening local git repository. This should not happen.'
-						+ `Is /site missing? Is /site/.git missing?\nError:${err}`);
-			throw err;
+			await repo.mergeBranches(config.git.branch, headRef, signature, mergePref);
+			const head = await getHeadCommit();
+			return resolve(head.sha());
+		} catch (err) {
+			logger.error(`Error merging local git and development git \nError:${err}`);
+			return reject(err);
 		}
 	});
 }
+
 
 /**
  * @description Saves the updated file from the web ui to the server git
@@ -114,7 +70,7 @@ async function openRepository() {
  * @see module:lib/User
  * @async
  */
-async function saveFile(data, filePath, user) {
+async function saveFile(data, filePath, message) {
 	return new Promise(function handlePromise(resolve, reject) {
 		fs.writeFile(filePath, data, 'utf-8', async function handleWrite(err) {
 			if (err) {
@@ -122,7 +78,6 @@ async function saveFile(data, filePath, user) {
 				throw err;
 			}
 			logger.info(`Successfully wrote to ${filePath}`);
-			//read config
 
 			// open local repo
 			logger.info('Opening...');
@@ -141,9 +96,8 @@ async function saveFile(data, filePath, user) {
 				const parent = await repo.getCommit(head);
 				
 				// commit to repo
-				const id = await commit(repo, oID, parent, user);
-				logger.info(`Commit id: ${id}`);
-				resolve();
+				const newHead = await commit(repo, oID, parent, message);
+				return resolve(newHead.sha());
 			} catch(err) {
 				logger.error('Error: ' + err);
 				return reject(err);
@@ -153,11 +107,230 @@ async function saveFile(data, filePath, user) {
 }
 
 /**
+ * @description publishes site to the configured 
+ * publish remote and branch of the repo
+ * @returns {String} returns the sha of the head commit
+ * @async
+ */
+async function push() {
+	return new Promise(async function handlePromise(resolve, reject) {
+		const config = await util.readConfig();
+		const repo = await openRepository();
+		try {
+			logger.info(`getting specified remote ${config.git.remote}`);
+			const head = await getHeadCommit();
+			const remote = await repo.getRemote(config.git.remote);
+			const refSpec = [`refs/heads/master:refs/heads/${config.git.branch}`];
+			const opts = pushOptions(config);
+			await remote.push(refSpec, opts);
+			logger.info('Pushed repo to github.');
+			return resolve(head.sha());
+		} catch(err) {
+			logger.error(`${err}`);
+			return reject(err);
+		}
+	});
+}
+
+/**
+ * @description reverts the git branch to the requested commit
+ * @param {String} childHash represents the hash of the commit
+ * @returns {Stirng} returns the sha of the reverted commit
+ * @async
+ */
+async function revert(childHash) {
+	return new Promise(async function handlePromise(resolve, reject) {
+		try {
+			let repo = await openRepository(sitePath);
+
+			logger.info('Setting new head...');
+			let newHead = await repo.getCommit(childHash);
+			const parent = await newHead.parent(0);
+			parent.repo = repo;
+			const opts = new Git.RevertOptions();
+
+			logger.info('Reverting...');
+			await Git.Revert.revert(
+				repo,
+				newHead,
+				opts,
+			);
+			repo.stateCleanup();
+			
+			const index = await repo.refreshIndex();
+			if (index.hasConflicts()) {
+				await resolveConflicts(parent, repo, index);
+			}
+			await index.addAll();
+			await index.write();
+			const oID = await index.writeTree();
+			const head = await Git.Reference.nameToId(repo, 'HEAD');
+			const headCommit = await repo.getCommit(head);
+
+			const newestCommit = await commit(repo, oID, headCommit, `Reverting to commit ${childHash}`);
+			return resolve(newestCommit.sha());
+		} catch(err) {
+			logger.error(`${err}`);
+			return reject(err);
+		}
+	});
+}
+
+async function resolveConflicts(parent, repo, index) {
+	const oldTree = await parent.getTree();
+	const opts = new Git.DiffOptions();
+	const diff = await Git.Diff.treeToIndex(repo, oldTree, index, opts);
+	const patches = await diff.patches();
+	const conflictedPatches = patches.filter(function handleFilter(patch) {
+		if (patch.isConflicted()) {
+			return patch;
+		}
+	});
+	conflictedPatches.forEach(async function handlePatch(patch) {
+		const oldFilePath = patch.oldFile().path();
+		const newTree = await parent.getTree();
+		const entry = await newTree.entryByPath(oldFilePath);
+		entry.parent = parent;
+		if (entry.isBlob()) {
+			const data = (await entry.getBlob()).toString();
+			const filePath = globalizePath(path.join(newTree.path(), entry.name()));
+			console.log(filePath);
+			fs.writeFileSync(filePath, data, 'utf-8');
+		}
+	});
+}
+
+/**
+ * @description opens the local repository saved to the machine
+ * @param {String} sitePath path to local site git repo
+ * @returns {nodegit.Repository:Object} returns a nodegit repository 
+ * after opening so that commands can be run on top of it
+ * @async
+ * @private
+ */
+async function openRepository() {
+	return new Promise(async function handlePromise(resolve) {
+		logger.info('Opening...');
+		let repo;
+		try {
+			repo = await Git.Repository.open(sitePath);
+			return resolve(repo);
+		} catch(err) {
+			logger.error('Error opening local git repository. This should not happen.'
+						+ `Is /site missing? Is /site/.git missing?\nError:${err}`);
+			throw err;
+		}
+	});
+}
+
+/**
+ * @description commits recent edits and changes to the
+ * local repository
+ * @param {nodegit.Repository:Object} repo git repository
+ * @param {nodegit.Oid:Object} oID Oid of commit prior
+ * @param {nodegit.Commit:Object} parent parent commit
+ * @param {String} message takes in a user's commit message
+ * @returns {Number} the new commit id number
+ * @async
+ * @private
+ */
+async function commit(repo, oID, parent, message) {
+	logger.info('Commiting...');
+	const config = await util.readConfig();
+
+	const author = createSignature(config.git);
+	const committer = createSignature(config.git);
+
+	const oid = await repo.createCommit(
+		'HEAD',
+		author, 
+		committer, 
+		message, 
+		oID, 
+		[parent]
+	);
+
+	return await repo.getCommit(oid);
+}
+
+/**
+ * @private
+ * @description fetches most recent commit from configured remote
+ * @param {nodegit.Repository:Object} repo nodeg it repository object at the sitePath
+ * @param {Object} config app configuration variable
+ * @param {Function} reject reject callback for promise
+ * @async
+ */
+async function fetch(repo, config, reject) {
+	logger.info('Fetching...');
+	try {
+		await repo.fetch(config.git.remote);
+	} catch (err) {
+		logger.error(`Error fetching git.\nError:${err}`);
+		return reject(err);
+	}
+}
+
+/**
+ * @private
+ * @description creates a git singature
+ * @param {Object} info user information
+ * @returns {nodegit.Signature:Object} returns a nodegit Signature
+ */
+function createSignature(info) {
+	logger.info('Creating signature...');
+	return Git.Signature.now(
+		info.firstName, 
+		info.email, 
+	);
+}
+
+/**
+ * @private
+ * @description creates push credentials and configures other options
+ * @param {Object} config app configuration variable
+ * @returns {Object} returns an object that configures credentials
+ */
+function pushOptions(config) {
+	return {
+		callbacks: {
+			credentials: async () => {
+				const creds = await handleCreds(config);
+				return Git.Cred.userpassPlaintextNew(
+					creds[0], 
+					creds[1],
+				);
+			},
+		},
+	};
+}
+
+/**
+ * @async
+ * @description creates a reference to the head where the git was most recently fetched
+ * @param {nodegit.Repository:Object} repo node git repository object.
+ * @returns {nodegit.Reference:Object} returns a nodegit reference that
+ * refers to the FETCH_HEAD
+ * @private
+ */
+async function createHeadReference(repo) {
+	logger.info('Creating FETCH_HEAD ref');
+	try {
+		let ref = await Git.Reference.lookup(repo, 'FETCH_HEAD');
+		return ref;
+	} catch(err) {
+		logger.error(err);
+		throw err;
+	}
+}
+
+/**
  * @description takes the global file path of a file within
  * the local site stored and resolves the string to pertain to the ./site
  * dir as the root of the path
  * @param {String} filePath path to file
  * @returns {String} returns localized string to the ./site root
+ * @private
  */
 function localizePath(filePath) {
 	let subpaths = filePath.split('/');
@@ -179,75 +352,17 @@ function localizePath(filePath) {
 }
 
 /**
- * @description commits recent edits and changes to the
- * local repository
- * @param {nodegit.Repository:Object} repo git repository
- * @param {nodegit.Oid:Object} oID Oid of commit prior
- * @param {nodegit.Commit:Object} parent parent commit
- * @param {String} message takes in a user's commit message
- * @returns {Number} the new commit id number
- * @async
+ * @description returns the global file path
+ * @param {String} filePath takes in the local site file path
+ * @returns {String} returns the global file path of a local path
+ * @private
  */
-async function commit(repo, oID, parent, message) {
-	logger.info('Commiting...');
-	const config = await util.readConfig();
-
-	const author = Git.Signature.now(
-		config.git.firstName, 
-		config.git.email, 
-	);
-
-	const committer = Git.Signature.now(
-		config.git.firstName,
-		config.git.email,
-	);
-
-	return await repo.createCommit(
-		'HEAD',
-		author, 
-		committer, 
-		message, 
-		oID, 
-		[parent]
-	);
+function globalizePath(filePath) {
+	return path.resolve(__dirname, '../../site', filePath);
 }
 
 /**
- * @description publishes site to the configured 
- * publish remote and branch of the repo
- * @async
- */
-async function push() {
-	return new Promise(async function handlePromise(resolve, reject) {
-		const config = await util.readConfig();
-		const repo = await openRepository();
-		try {
-			logger.info(`getting specified remote ${config.git.remote}`);
-			const remote = await repo.getRemote(config.git.remote);
-			await remote.push(
-				[`refs/heads/master:refs/heads/${config.git.branch}`],
-				{
-					callbacks: {
-						credentials: async () => {
-							const creds = await handleCreds(config);
-							return Git.Cred.userpassPlaintextNew(
-								creds[0], 
-								creds[1],
-							);
-						},
-					},
-				}
-			);
-			logger.info('Pushed repo to github.');
-			return resolve();
-		} catch(err) {
-			logger.error(`${err}`);
-			return reject(err);
-		}
-	});
-}
-
-/**
+ * @private
  * @description handles github credentials when publishing to repo
  * @param {Object} config app configuration object
  * @async
@@ -294,34 +409,6 @@ function decrypt(config, str, next) {
 	});
 	decipher.write(str, 'hex');
 	decipher.end();
-}
-
-/**
- * @description reverts the git branch to the requested commit
- * @param {String} hash represents the hash of the commit
- * @async
- */
-async function revert(hash) {
-	return new Promise(async function handlePromise(resolve, reject) {
-		try {
-			let repo = await openRepository(sitePath);
-
-			logger.info('Setting new head...');
-			let newHead = await repo.getCommit(hash);
-			const opts = new Git.RevertOptions();
-
-			logger.info('Reverting...');
-			await Git.Revert.revert(
-				repo,
-				newHead,
-				opts,
-			);
-			return resolve();
-		} catch(err) {
-			logger.error(`${err}`);
-			return reject(err);
-		}
-	});
 }
 
 /**
