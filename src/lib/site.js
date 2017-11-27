@@ -176,7 +176,19 @@ async function revert(childHash) {
 	});
 }
 
+/**
+ * @private
+ * @async
+ * @description Resolves all conflicts by overwritting with all the old file
+ * data as the resolve conflicts is used during a reversion function.
+ * @param {nodegit.Commit:Object} parent parent commit of 
+ * which git is attempting to revert to
+ * @param {nodegit.Repository:Object} repo working repository of configured site
+ * @param {nodegit.Index:Object} index working index of current repository
+ */
+
 async function resolveConflicts(parent, repo, index) {
+	logger.info('Resolving...');
 	const oldTree = await parent.getTree();
 	const opts = new Git.DiffOptions();
 	const diff = await Git.Diff.treeToIndex(repo, oldTree, index, opts);
@@ -194,7 +206,6 @@ async function resolveConflicts(parent, repo, index) {
 		if (entry.isBlob()) {
 			const data = (await entry.getBlob()).toString();
 			const filePath = globalizePath(path.join(newTree.path(), entry.name()));
-			console.log(filePath);
 			fs.writeFileSync(filePath, data, 'utf-8');
 		}
 	});
@@ -390,6 +401,7 @@ async function handleCreds(config) {
  * @returns {String} returns the decrypted string to the
  * callback
  * @async
+ * @private
  */
 function decrypt(config, str, next) {
 	logger.info('decrypting...');
