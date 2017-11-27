@@ -1,8 +1,14 @@
 /**
  * @description Implements util functions for all modules in the library
  * @author Evan Coulson <ivansonofcoul@gmail.com>
+ * 
+ * @module util
+ * 
+ * @requires fs
+ * @requires path
+ * @requires Crypto
+ * @requires module:util/Logger
  */
-
 const fs = require('fs');
 const path = require('path');
 const Logger = require('../util/Logger');
