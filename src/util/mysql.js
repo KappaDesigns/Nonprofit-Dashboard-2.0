@@ -4,6 +4,7 @@
  * database. This class requires the {@link module:util/Logger|Logger}, 
  * {@link https://www.npmjs.com/package/sequelize|Sequelize}, and 
  * {@link https://www.npmjs.com/package/dotenv|Dotenv}
+ * @author Evan Coulson <ivansonofcoul@gmail.com>
  * 
  * @module util/MYSQL
  * 

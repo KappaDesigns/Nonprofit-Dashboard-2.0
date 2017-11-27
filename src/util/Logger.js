@@ -2,7 +2,8 @@
  * @description The logger module is built on top of the Winston logging module 
  * {@link https://www.npmjs.com/package/winston|Winston}.
  * This module allows for loggers with different tags and debuging levels to be created with ease.
- *
+ * @author Evan Coulson <ivansonofcoul@gmail.com>
+ * 
  * @module util/Logger
  * 
  * @requires Winston
@@ -34,7 +35,6 @@ const logFormat = printf(function handleFormat(info) {
  * running in a testing env or not
  * @returns {Logger:Object} Returns a logger that logs all given values to
  * each transport
- * @constructor
  */
 module.exports = function Logger(tag, debugLevels, testingEnv) {
 	let fileArray = debugLevels.map((x) => {

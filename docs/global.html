@@ -94,9 +94,291 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="fs"><span class="type-signature">(constant) </span>fs<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Implements util functions for all modules in the library
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li><a href="mailto:ivansonofcoul@gmail.com">Evan Coulson</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="module:util/Logger"><span class="type-signature"></span>module:util/Logger<span class="signature">(tag, debugLevels, testingEnv)</span><span class="type-signature"> &rarr; {Logger:Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates a new Logger using a given tag, debugging levels,
+and environment. Allowing multiple loggers to be easily created through
+out the application.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tag</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">String that defines the tag of the logger and
+allows the logger to be easily identified</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>debugLevels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array of strings that determines
+what level of logs should be written as files to the logs directory</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>testingEnv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">determines if the current logger is 
+running in a testing env or not</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_Logger.js.html">util/Logger.js</a>, <a href="util_Logger.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Returns a logger that logs all given values to
+each transport
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Logger:Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
 
         
             
@@ -206,7 +488,7 @@ database to connect to within MYSQL.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_mysql.js.html">util/mysql.js</a>, <a href="util_mysql.js.html#line37">line 37</a>
+        <a href="util_mysql.js.html">util/mysql.js</a>, <a href="util_mysql.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -318,7 +600,7 @@ Sequelize Schema types.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line14">line 14</a>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -384,13 +666,13 @@ Sequelize Schema types.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_Site.html">lib/Site</a></li><li><a href="module-util_Logger.html">util/Logger</a></li><li><a href="module-util_MYSQL.html">util/MYSQL</a></li></ul><h3>Classes</h3><ul><li><a href="module-util_Logger.html">util/Logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#readConfig">readConfig</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_Site.html">lib/Site</a></li><li><a href="module-util_Logger.html">util/Logger</a></li><li><a href="module-util_MYSQL.html">util/MYSQL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fs">fs</a></li><li><a href="global.html#readConfig">readConfig</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 26 2017 17:44:55 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 26 2017 17:51:32 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
