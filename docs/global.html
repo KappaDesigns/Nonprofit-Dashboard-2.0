@@ -98,16 +98,197 @@
 
         
             
-<h4 class="name" id="Express"><span class="type-signature">(constant) </span>Express<span class="type-signature"></span></h4>
+<h4 class="name" id="fs"><span class="type-signature">(constant) </span>fs<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    creates the 
-application server using <a href="https://www.npmjs.com/package/express">https://www.npmjs.com/package/express</a>
+    Implements util functions for all modules in the library
 </div>
 
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li><a href="mailto:ivansonofcoul@gmail.com">Evan Coulson</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="decrypt"><span class="type-signature">(async) </span>decrypt<span class="signature">(config, str, next)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    decrypts a given string using the confgured secret
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">app configuration object</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">string to decrypt</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>next</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">callback when finished decrypting</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -143,7 +324,7 @@ application server using <a href="https://www.npmjs.com/package/express">https:/
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app.js.html">app.js</a>, <a href="app.js.html#line8">line 8</a>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -159,11 +340,565 @@ application server using <a href="https://www.npmjs.com/package/express">https:/
 
 
 
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
+<div class="param-desc">
+    returns the decrypted string to the
+callback
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
     
 
     
-        <h3 class="subsection-title">Methods</h3>
+    <h4 class="name" id="globalizePath"><span class="type-signature"></span>globalizePath<span class="signature">(filePath)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    returns the global file path
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filePath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">takes in the local site file path</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    returns the global file path of a local path
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="localizePath"><span class="type-signature"></span>localizePath<span class="signature">(filePath)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    takes the global file path of a file within
+the local site stored and resolves the string to pertain to the ./site
+dir as the root of the path
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filePath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">path to file</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    returns localized string to the ./site root
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="module:util/Logger"><span class="type-signature"></span>module:util/Logger<span class="signature">(tag, debugLevels, testingEnv)</span><span class="type-signature"> &rarr; {Logger:Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates a new Logger using a given tag, debugging levels,
+and environment. Allowing multiple loggers to be easily created through
+out the application.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tag</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">String that defines the tag of the logger and
+allows the logger to be easily identified</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>debugLevels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array of strings that determines
+what level of logs should be written as files to the logs directory</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>testingEnv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">determines if the current logger is 
+running in a testing env or not</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_Logger.js.html">util/Logger.js</a>, <a href="util_Logger.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Returns a logger that logs all given values to
+each transport
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Logger:Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
 
         
             
@@ -273,7 +1008,7 @@ database to connect to within MYSQL.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="src_util_mysql.js.html">src/util/mysql.js</a>, <a href="src_util_mysql.js.html#line37">line 37</a>
+        <a href="util_mysql.js.html">util/mysql.js</a>, <a href="util_mysql.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -328,6 +1063,114 @@ Sequelize Schema types.
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="readConfig"><span class="type-signature">(async) </span>readConfig<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    reads the config and returns a javascript object
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    represents the config
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -343,13 +1186,13 @@ Sequelize Schema types.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-util_Logger.html">util/Logger</a></li><li><a href="module-util_MYSQL.html">util/MYSQL</a></li></ul><h3>Classes</h3><ul><li><a href="module-util_Logger.html">util/Logger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Express">Express</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_Site.html">lib/Site</a></li><li><a href="module-util_Logger.html">util/Logger</a></li><li><a href="module-util_MYSQL.html">util/MYSQL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#globalizePath">globalizePath</a></li><li><a href="global.html#localizePath">localizePath</a></li><li><a href="global.html#readConfig">readConfig</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Nov 21 2017 14:43:08 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 26 2017 17:53:42 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
