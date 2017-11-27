@@ -40,7 +40,7 @@
     "webpack": "^3.8.1"
   },
   "scripts": {
-    "start": "node app.js 8080",
+    "start": "nodemon app.js 8080",
     "init": "./scripts/init.sh",
     "document": "./node_modules/jsdoc/jsdoc.js ./src/ -r -d ./docs/ --readme ./docs/README.md",
     "app:stage": "npm run document && git push staging master",
