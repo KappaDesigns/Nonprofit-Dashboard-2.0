@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request-promise');
 
-const testURL = 'https://api.github.com/repos/ecoulson/Kappa-Designs-Home/commits?access_token=20b4978a58c92b0c5df5be173cdbc3b4e3713ed6';
+const testURL = `https://api.github.com/repos/ecoulson/Kappa-Designs-Home/commits?access_token=${process.env.ACCESS_TOKEN}`;
 const requestOptions = {
 	uri: testURL,
 	headers: {
@@ -17,6 +17,7 @@ const requestOptions = {
 	json: true,
 };
 const testFilePath = 'test.html';
+const revertFilePath = 'revert.html';
 const revertHash = '1dc364ed48a28b1ca9744dcfefc45f1a19c1e8a7';
 
 describe('Site Test Suite', function() {
@@ -86,7 +87,16 @@ describe('Site Test Suite', function() {
 		this.timeout(10000);
 		const sha = await Site.revert(revertHash);
 		const head = await Site.getHeadCommit();
+		const revertFile = fs.readFileSync(
+			path.resolve(__dirname, '../site', revertFilePath),
+			'utf-8'
+		);
+		const testFile = fs.readFileSync(
+			path.resolve(__dirname, '../site', testFilePath),
+			'utf-8'
+		);
 		expect(head.sha()).to.equal(sha);
+		expect(testFile).to.equal(revertFile);
 	});
 
 	after(async function() {
