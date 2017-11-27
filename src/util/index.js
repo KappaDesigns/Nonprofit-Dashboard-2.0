@@ -37,7 +37,6 @@ function readConfig() {
  * dir as the root of the path
  * @param {String} filePath path to file
  * @returns {String} returns localized string to the ./site root
- * @private
  */
 function localizePath(filePath) {
 	let subpaths = filePath.split('/');
@@ -62,21 +61,19 @@ function localizePath(filePath) {
  * @description returns the global file path
  * @param {String} filePath takes in the local site file path
  * @returns {String} returns the global file path of a local path
- * @private
  */
 function globalizePath(filePath) {
 	return path.resolve(__dirname, '../../site', filePath);
 }
 
 /**
- * 
+ * @description decrypts a given string using the confgured secret
  * @param {Object} config app configuration object
  * @param {String} str string to decrypt
  * @param {Function} next callback when finished decrypting
  * @returns {String} returns the decrypted string to the
  * callback
  * @async
- * @private
  */
 function decrypt(config, str, next) {
 	logger.info('decrypting...');
