@@ -47,7 +47,8 @@
     "app:production": "git push production master",
     "mysql:create_db": "node ./src/util/createDatabase.js",
     "test:karma": "./scripts/karma_test.sh",
-    "test:mocha": "./scripts/mocha_test.sh"
+	"test:mocha": "./scripts/mocha_test.sh",
+	"test:mocha:watch": "./scripts/mocha_test.sh true"
   },
   "repository": {
     "type": "git",
