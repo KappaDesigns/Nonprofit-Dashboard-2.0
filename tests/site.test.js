@@ -6,6 +6,7 @@ const expect = chai.expect;
 const fs = require('fs');
 const path = require('path');
 const request = require('request-promise');
+const util = require('../src/util');
 
 const testURL = `https://api.github.com/repos/ecoulson/Kappa-Designs-Home/commits?access_token=${process.env.ACCESS_TOKEN}`;
 const requestOptions = {
@@ -21,6 +22,15 @@ const revertFilePath = 'revert.html';
 const revertHash = '1dc364ed48a28b1ca9744dcfefc45f1a19c1e8a7';
 
 describe('Site Test Suite', function() {
+	it('Should get the file at a path', async () => {
+		const testData = await Site.getPage('test.html');
+		const data = fs.readFileSync(
+			util.globalizePath(revertFilePath),
+			'utf-8'
+		);
+		expect(testData).to.equal(data);
+	});
+
 	it('Should sync the local site with git', async () => {
 		logger.info('Getting most recent commit from github...');
 		const commits = await request(requestOptions);

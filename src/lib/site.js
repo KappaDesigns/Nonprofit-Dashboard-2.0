@@ -25,6 +25,19 @@ const Logger = require('../util/Logger');
 const sitePath = path.resolve(__dirname, '../../site');
 const logger = Logger('Site.js', ['error']);
 
+async function getFile(path) {
+	return new Promise(function handlePromise(resolve, reject) {
+		fs.readFile(util.globalizePath(path), 'utf-8', 
+			function handleRead(err, data) {
+				if (err) {
+					logger.error(err);
+					return reject(err);
+				}
+				return resolve(data);
+			});
+	});
+}
+
 /**
  * @description emulates a git pull to update the site
  * with any recent changes made by the development team
@@ -369,6 +382,7 @@ async function getHeadCommit() {
 }
 
 module.exports = {
+	getPage: getFile,
 	editPage: saveFile,
 	update: pullRepo,
 	publish: push,
