@@ -3,6 +3,7 @@ const request = require('request-promise');
 const fs = require('fs');
 const path = require('path');
 const expect = chai.expect;
+const Site = require('../src/lib/site');
 
 const data = fs.readFileSync(
 	path.resolve(__dirname, '../site/', 'index.html'),
@@ -114,6 +115,9 @@ describe('Site Router Test Suite', function() {
 			} catch(err) {
 				expect(err.statusCode).to.equal(404);
 			}
+		});
+
+		it('Should write input.html data to test.html', () => {
 		});
 	});
 });
