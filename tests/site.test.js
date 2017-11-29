@@ -44,6 +44,7 @@ describe('Site Test Suite', function() {
 		logger.info('Comparing shas..');
 		logger.debug(commitSHA);
 		logger.debug(sha);
+		console.log(commitSHA);
 		expect(commitSHA).to.equal(sha);
 	});
 

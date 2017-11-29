@@ -66,7 +66,7 @@ router.put('/:path', function handleReq(req, res, next) {
 			try {
 				await Site.editPage(
 					req.body.html, 
-					req.params.path, 
+					util.globalizePath(req.params.path), 
 					req.body.message,
 				);
 				res.status(200).send('Modified Page');

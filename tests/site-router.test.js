@@ -2,15 +2,18 @@ const chai = require('chai');
 const request = require('request-promise');
 const expect = chai.expect;
 const Site = require('../src/lib/site');
+const path = require('path');
+const fs = require('fs');
+const util = require('../src/util');
 
-const input = require('fs').readFileSync(
-	require('path').resolve(__dirname, '../site/input.html'),
+const input = fs.readFileSync(
+	path.resolve(__dirname, '../site/input.html'),
 	'utf-8'
 );
 
 describe('Site Router Test Suite', function() {
 	describe('Should test the GET of a file at api/site/:path', () => {
-		it('Should return 404 ok at /api/site', async () => {
+		it('Should return 404 at /api/site', async () => {
 			try {
 				await request({
 					method: 'GET',
@@ -89,7 +92,6 @@ describe('Site Router Test Suite', function() {
 				throw new Error('Should not PUT successfully');
 			}  catch(err) {
 				expect(err.statusCode).to.equal(400);
-				throw err;
 			}
 		});
 
@@ -141,7 +143,7 @@ describe('Site Router Test Suite', function() {
 			try {
 				await request({
 					method: 'PUT', 
-					uri: 'http://localhost:8080/api/site/input.html',
+					uri: 'http://localhost:8080/api/site/test.html',
 					resolveWithFullResponse: true,
 					json:true,
 					form: {
@@ -155,5 +157,15 @@ describe('Site Router Test Suite', function() {
 				throw err;
 			}
 		});
+	});
+
+	after(async function () {
+		this.timeout(10000);
+		const revert = fs.readFileSync(
+			util.globalizePath('revert.html'),
+			'utf-8',
+		);
+		fs.writeFileSync(util.globalizePath('test.html'), revert);
+		await Site.publish();
 	});
 });

@@ -69,7 +69,6 @@ function localizePath(filePath) {
  * @returns {String} returns the global file path of a local path
  */
 function globalizePath(filePath) {
-	console.log(filePath);
 	return path.resolve(__dirname, '../../site', filePath);
 }
 
