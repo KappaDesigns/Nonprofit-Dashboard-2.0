@@ -48,6 +48,9 @@ router.put('/:path', function handleReq(req, res, next) {
 	const path = util.globalizePath(req.params.path);
 	fs.stat(path, function handleAccess(err, stats) {
 		if (err) {
+			if (err) {
+				res.status(500).send('Something went horribly wrong');
+			}
 			res.status(404).send('File not found');
 			return next();
 		} else if (stats.isFile()) {
