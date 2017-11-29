@@ -82,8 +82,7 @@ async function pullRepo(user) {
  * @see module:lib/User
  * @async
  */
-async function saveFile(data, localPath, message) {
-	let filePath = util.globalizePath(localPath);
+async function saveFile(data, filePath, message) {
 	return new Promise(function handlePromise(resolve, reject) {
 		fs.writeFile(filePath, data, 'utf-8', async function handleWrite(err) {
 			if (err) {
@@ -100,7 +99,7 @@ async function saveFile(data, localPath, message) {
 			//add to tree
 			logger.info('Adding...');
 			try {
-				// filePath = util.localizePath(filePath);
+				filePath = util.localizePath(filePath);
 				logger.debug(filePath);
 				await index.addByPath(filePath.trim());
 				await index.write();
