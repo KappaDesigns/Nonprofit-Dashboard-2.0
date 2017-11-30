@@ -145,7 +145,7 @@ describe('Site Router Test Suite', function() {
 					method: 'PUT', 
 					uri: 'http://localhost:8080/api/site/test.html',
 					resolveWithFullResponse: true,
-					json:true,
+					json: true,
 					form: {
 						html: input,
 						message: 'test',
