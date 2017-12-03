@@ -63,8 +63,20 @@ async function pullRepo(user) {
 		const mergePref = Git.Merge.PREFERENCE.NONE;
 		try {
 			await repo.mergeBranches(config.git.branch, headRef, signature, mergePref);
-			const head = await getHeadCommit();
-			return resolve(head.sha());
+			repo.stateCleanup();
+			
+			const index = await repo.refreshIndex();
+			let newCommit = await getHeadCommit();
+			if (index.hasConflicts()) {
+				await resolveConflicts(head, repo, index, true);
+				await index.addAll();
+				await index.write();
+				const oID = await index.writeTree();
+				const head = await Git.Reference.nameToId(repo, 'HEAD');
+				const headCommit = await repo.getCommit(head);
+				newCommit = await commit(repo, oID, headCommit, 'Fixing pull issues');
+			}
+			return resolve(newCommit.sha());
 		} catch (err) {
 			logger.error(`Error merging local git and development git \nError:${err}`);
 			return reject(err);
@@ -146,19 +158,17 @@ async function push() {
 
 /**
  * @description reverts the git branch to the requested commit
- * @param {String} childHash represents the hash of the commit
+ * @param {String} hash represents the hash of the commit
  * @returns {Stirng} returns the sha of the reverted commit
  * @async
  */
-async function revert(childHash) {
+async function revert(hash) {
 	return new Promise(async function handlePromise(resolve, reject) {
 		try {
 			let repo = await openRepository(sitePath);
 
 			logger.info('Setting new head...');
-			let newHead = await repo.getCommit(childHash);
-			const parent = await newHead.parent(0);
-			parent.repo = repo;
+			let newHead = await repo.getCommit(hash);
 			const opts = new Git.RevertOptions();
 
 			logger.info('Reverting...');
@@ -170,16 +180,17 @@ async function revert(childHash) {
 			repo.stateCleanup();
 			
 			const index = await repo.refreshIndex();
+			let newestCommit = await getHeadCommit();
 			if (index.hasConflicts()) {
-				await resolveConflicts(parent, repo, index);
+				await resolveConflicts(newHead, repo, index, false);
+				await index.addAll();
+				await index.write();
+				const oID = await index.writeTree();
+				const head = await Git.Reference.nameToId(repo, 'HEAD');
+				const headCommit = await repo.getCommit(head);
+				newestCommit = await commit(repo, oID, headCommit, `Reverting to commit ${hash}`);
 			}
-			await index.addAll();
-			await index.write();
-			const oID = await index.writeTree();
-			const head = await Git.Reference.nameToId(repo, 'HEAD');
-			const headCommit = await repo.getCommit(head);
-
-			const newestCommit = await commit(repo, oID, headCommit, `Reverting to commit ${childHash}`);
+			
 			return resolve(newestCommit.sha());
 		} catch(err) {
 			logger.error(`${err}`);
@@ -197,13 +208,15 @@ async function revert(childHash) {
  * which git is attempting to revert to
  * @param {nodegit.Repository:Object} repo working repository of configured site
  * @param {nodegit.Index:Object} index working index of current repository
+ * @param {Boolean} useNewFile tells the resolve to overwrite conflicted file
+ * with the new or old file in the patch
  */
 
-async function resolveConflicts(parent, repo, index) {
+async function resolveConflicts(commit, repo, index, useNewFile) {
 	logger.info('Resolving...');
-	const oldTree = await parent.getTree();
+	const tree = await commit.getTree();
 	const opts = new Git.DiffOptions();
-	const diff = await Git.Diff.treeToIndex(repo, oldTree, index, opts);
+	const diff = await Git.Diff.treeToIndex(repo, tree, index, opts);
 	const patches = await diff.patches();
 	const conflictedPatches = patches.filter(function handleFilter(patch) {
 		if (patch.isConflicted()) {
@@ -211,13 +224,17 @@ async function resolveConflicts(parent, repo, index) {
 		}
 	});
 	conflictedPatches.forEach(async function handlePatch(patch) {
-		const oldFilePath = patch.oldFile().path();
-		const newTree = await parent.getTree();
-		const entry = await newTree.entryByPath(oldFilePath);
-		entry.parent = parent;
+		let filePath;
+		if (useNewFile) {
+			filePath = patch.newFile().path();
+		} else {
+			filePath = patch.oldFile().path();
+		}
+		const entry = await tree.entryByPath(filePath);
+		entry.parent = commit;
 		if (entry.isBlob()) {
 			const data = (await entry.getBlob()).toString();
-			const filePath = util.globalizePath(path.join(newTree.path(), entry.name()));
+			const filePath = util.globalizePath(path.join(tree.path(), entry.name()));
 			fs.writeFileSync(filePath, data, 'utf-8');
 		}
 	});

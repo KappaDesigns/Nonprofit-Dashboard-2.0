@@ -19,7 +19,7 @@ const requestOptions = {
 };
 const testFilePath = 'test.html';
 const revertFilePath = 'revert.html';
-const revertHash = '1dc364ed48a28b1ca9744dcfefc45f1a19c1e8a7';
+const revertHash = '0a37f37a6cf7054bfd35210bc0500288612ec2d8';
 
 describe('Site Test Suite', function() {
 	it('Should get the file at a path', async () => {
@@ -44,7 +44,6 @@ describe('Site Test Suite', function() {
 		logger.info('Comparing shas..');
 		logger.debug(commitSHA);
 		logger.debug(sha);
-		console.log(commitSHA);
 		expect(commitSHA).to.equal(sha);
 	});
 
