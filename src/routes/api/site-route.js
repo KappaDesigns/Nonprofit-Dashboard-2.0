@@ -98,4 +98,18 @@ router.post('/sync', async function handleReq(req, res, next) {
 	}
 });
 
+router.post('/publish', async function handleReq(req, res, next) {
+	logger.info('Received POST request @ publish');
+	try {
+		const sha = await Site.publish();
+		res.status(200).send(sha);
+		return next();
+	} catch (err) {
+		res.status(500).send('Something went horribly wrong');
+		return next(err);
+	}
+});
+
+
+
 module.exports = router;
