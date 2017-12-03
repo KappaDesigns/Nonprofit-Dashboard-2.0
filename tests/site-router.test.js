@@ -7,6 +7,15 @@ const fs = require('fs');
 const util = require('../src/util');
 const Logger = require('../src/util/Logger');
 const logger = Logger('site_router_test', [], true);
+const testURL = `https://api.github.com/repos/ecoulson/Kappa-Designs-Home/commits?access_token=${process.env.ACCESS_TOKEN}`;
+const requestOptions = {
+	uri: testURL,
+	headers: {
+		Accept: 'application/vnd.github.v3+json',
+		'User-Agent': 'Request-Promise',		
+	},
+	json: true,
+};
 
 const input = fs.readFileSync(
 	path.resolve(__dirname, '../site/input.html'),
@@ -213,6 +222,41 @@ describe('Site Router Test Suite', function() {
 				expect(res.body).to.equal(head.sha());
 			} catch (err) {
 				logger.error(err);
+				throw err;
+			}
+		});
+	});
+
+	describe('Should test the publish function of the site', () => {
+		it('Should POST 200 at api/site/publish', async function() {
+			this.timeout(10000);
+			try {
+				const res = await request({
+					method: 'POST',
+					uri: 'http://localhost:8080/api/site/publish',
+					resolveWithFullResponse: true,
+					json: true,
+				});
+				expect(res.statusCode).to.equal(200);
+			} catch (err) {
+				throw err;
+			}
+		});
+		
+		it('Should receive the correct SHA from api/site/publish', async function() {
+			this.timeout(10000);
+			try {
+				const res = await request({
+					method: 'POST',
+					uri: 'http://localhost:8080/api/site/publish',
+					resolveWithFullResponse: true,
+					json: true,
+				});
+				const head = await Site.getHeadCommit();
+				const commits = await request(requestOptions);
+				const commitSHA = commits[0].sha;
+				expect(head.sha()).to.equal(commitSHA);
+			} catch (err) {
 				throw err;
 			}
 		});
