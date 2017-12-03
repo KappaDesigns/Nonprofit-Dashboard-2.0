@@ -9,6 +9,7 @@ describe('MYSQL Test Suite', function() {
 	let MYSQL;
 	
 	before(async function() {
+		this.timeout(10000);
 		MYSQL = await createDatabaseConnection(process.env.DB_NAME);
 	});
 

@@ -5,6 +5,8 @@ const Site = require('../src/lib/site');
 const path = require('path');
 const fs = require('fs');
 const util = require('../src/util');
+const Logger = require('../src/util/Logger');
+const logger = Logger('site_router_test', [], true);
 
 const input = fs.readFileSync(
 	path.resolve(__dirname, '../site/input.html'),
@@ -20,7 +22,10 @@ describe('Site Router Test Suite', function() {
 					uri: 'http://localhost:8080/api/site/',
 					resolveWithFullResponse: true,
 				});
-				throw new Error('Should not successfully get');
+				
+				const err = new Error('Should not successfully get');
+				logger.error(err);
+				throw err;
 			} catch(err) {
 				expect(err.statusCode).to.equal(404);
 			}
@@ -32,7 +37,10 @@ describe('Site Router Test Suite', function() {
 					uri: 'http://localhost:8080/api/aweifjawiefjawio',
 					resolveWithFullResponse: true,
 				});
-				throw new Error('Should not successfully get');
+				
+				const err = new Error('Should not successfully get');
+				logger.error(err);
+				throw err;
 			} catch(err) {
 				expect(err.statusCode).to.equal(404);
 			}
@@ -45,7 +53,10 @@ describe('Site Router Test Suite', function() {
 					uri: 'http://localhost:8080/api/site/imgs',
 					resolveWithFullResponse: true,
 				});
-				throw new Error('Should not successfully get');
+				
+				const err = new Error('Should not successfully get');
+				logger.error(err);
+				throw err;
 			} catch(err) {
 				expect(err.statusCode).to.equal(400);
 			}
@@ -60,6 +71,7 @@ describe('Site Router Test Suite', function() {
 				});
 				expect(res.statusCode).to.equal(200);
 			} catch(err) {
+				logger.error(err);
 				throw err;
 			}
 		});
@@ -74,6 +86,7 @@ describe('Site Router Test Suite', function() {
 				const data = await Site.getPage('index.html');
 				expect(res.body).to.equal(data);
 			}  catch(err) {
+				logger.error(err);
 				throw err;
 			}
 		});
@@ -89,7 +102,10 @@ describe('Site Router Test Suite', function() {
 					form: {},
 					json: true,
 				});
-				throw new Error('Should not PUT successfully');
+
+				const err = new Error('Should not PUT successfully');
+				logger.error(err);
+				throw err;
 			}  catch(err) {
 				expect(err.statusCode).to.equal(400);
 			}
@@ -104,7 +120,10 @@ describe('Site Router Test Suite', function() {
 					json: true,
 					form: {},
 				});
-				throw new Error('Should not PUT successfully');
+
+				const err = new Error('Should not PUT successfully');
+				logger.error(err);
+				throw err;
 			}  catch(err) {
 				expect(err.statusCode).to.equal(404);
 			}
@@ -119,7 +138,10 @@ describe('Site Router Test Suite', function() {
 					json:true,
 					form: {},
 				});
-				throw new Error('Should not successfully PUT');
+
+				const err = new Error('Should not PUT successfully');
+				logger.error(err);
+				throw err;
 			} catch(err) {
 				expect(err.statusCode).to.equal(400);
 			}
@@ -132,7 +154,10 @@ describe('Site Router Test Suite', function() {
 					uri: 'http://localhost:8080/api/site/imgs',
 					resolveWithFullResponse: true,
 				});
-				throw new Error('Should not PUT successfully');
+
+				const err = new Error('Should not PUT successfully');
+				logger.error(err);
+				throw err;
 			} catch (err) {
 				expect(err.body).to.equal(undefined);
 				expect(err.statusCode).to.equal(400);
@@ -154,12 +179,44 @@ describe('Site Router Test Suite', function() {
 				const data = await Site.getPage('test.html');
 				expect(data).to.equal(input);
 			} catch (err) {
+				logger.error(err);
 				throw err;
 			}
 		});
 	});
 
-	// describe('Should test the ')
+	describe('Should test the update function of the site', async () => {
+		it('Should POST a 200 at api/site/sync', async () => {
+			try {
+				const res = await request({
+					method: 'POST',
+					uri: 'http://localhost:8080/api/site/sync',
+					resolveWithFullResponse: true,
+					json: true,
+				});
+				expect(res.statusCode).to.equal(200);
+			} catch (err) {
+				logger.error(err);
+				throw err;
+			}
+		});
+
+		it('Should receive the correct SHA from api/site/sync', async () => {
+			try {
+				const res = await request({
+					method: 'POST',
+					uri: 'http://localhost:8080/api/site/sync',
+					resolveWithFullResponse: true,
+					json: true,
+				});
+				const head = await Site.getHeadCommit();
+				expect(res.body).to.equal(head.sha());
+			} catch (err) {
+				logger.error(err);
+				throw err;
+			}
+		});
+	});
 
 	after(async function () {
 		this.timeout(10000);

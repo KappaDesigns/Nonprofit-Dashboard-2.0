@@ -7,7 +7,7 @@ const util = require('../../util');
 const Site = require('../../lib/site');
 
 router.get('/:path', function handleReq(req, res, next) {
-	logger.info('Received Requeset');
+	logger.info('Received GET Requeset @ path');
 	const path = util.globalizePath(req.params.path);
 	fs.stat(path, async function handleAccess(err, stats) {
 		if (err) {
@@ -44,7 +44,7 @@ router.get('/:path', function handleReq(req, res, next) {
 });
 
 router.put('/:path', function handleReq(req, res, next) {
-	logger.info('Received Requeset');
+	logger.info('Received PUT Request @ path');
 	const path = util.globalizePath(req.params.path);
 	if (!req.body) {
 		res.status(400).send('No body attached to request');
@@ -58,10 +58,11 @@ router.put('/:path', function handleReq(req, res, next) {
 		if (err) {
 			if (err.code == 'ENOENT') {
 				res.status(404).send('File not found');
+				return next();
 			} else {
 				res.status(500).send('Something went horribly wrong');
+				return next(err);
 			}
-			return next();
 		} else if (stats.isFile()) {
 			try {
 				await Site.editPage(
@@ -73,7 +74,7 @@ router.put('/:path', function handleReq(req, res, next) {
 				return next();
 			} catch (err) {
 				res.status(500).send('Something went horribly wrong');
-				return next();
+				return next(err);
 			}
 		} else {
 			res.status(400).send('Requested resource is not a file');
@@ -82,6 +83,19 @@ router.put('/:path', function handleReq(req, res, next) {
 	});
 });
 
-
+router.post('/sync', async function handleReq(req, res, next) {
+	logger.info('Received POST Request @ sync');
+	try {
+		const sha = await Site.sync({
+			firstName: 'test',
+			email: 'test@test.com',
+		});
+		res.status(200).send(sha);
+		return next();
+	} catch (err) {
+		res.status(500).send('Something went horribly wrong');
+		return next(err);
+	}
+});
 
 module.exports = router;

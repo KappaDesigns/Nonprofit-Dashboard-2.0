@@ -31,11 +31,12 @@ describe('Site Test Suite', function() {
 		expect(testData).to.equal(data);
 	});
 
-	it('Should sync the local site with git', async () => {
+	it('Should sync the local site with git', async function() {
+		this.timeout(5000);
 		logger.info('Getting most recent commit from github...');
 		const commits = await request(requestOptions);
 		const commitSHA = commits[0].sha;
-		const sha = await Site.update({
+		const sha = await Site.sync({
 			firstName: 'test',
 			email: 'test@test.com',
 		});
