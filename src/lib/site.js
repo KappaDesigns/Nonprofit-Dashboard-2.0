@@ -399,11 +399,10 @@ async function getHeadCommit() {
 }
 
 module.exports = {
-	getPage: getFile,
-	editPage: saveFile,
-	update: pullRepo,
+	getPage: getFile, 
+	editPage: saveFile, 
+	sync: pullRepo, 
 	publish: push,
 	revert: revert,
-	saveChanges: commit,
 	getHeadCommit: getHeadCommit,
 };
