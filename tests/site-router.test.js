@@ -262,6 +262,10 @@ describe('Site Router Test Suite', function() {
 		});
 	});
 
+	describe('Should revert the site back to a certain commit', () => {
+		
+	});
+
 	after(async function () {
 		this.timeout(10000);
 		const revert = fs.readFileSync(
