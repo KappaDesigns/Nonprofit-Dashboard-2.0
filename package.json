@@ -10,12 +10,15 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-preset-flow": "^6.23.0",
+    "body-parser": "^1.18.2",
     "dotenv": "^4.0.0",
     "eslint": "^4.11.0",
     "express": "^4.16.2",
     "flow-bin": "^0.59.0",
     "mysql2": "^1.5.0",
     "nodegit": "^0.20.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "sequelize": "^4.22.12",
@@ -37,17 +40,18 @@
     "karma-sinon": "^1.0.5",
     "mocha": "^4.0.1",
     "sinon": "^4.1.2",
-    "webpack": "^3.8.1"
+    "webpack": "^3.10.0"
   },
   "scripts": {
-    "start": "node app.js 8080",
+    "start": "nodemon app.js 8080",
     "init": "./scripts/init.sh",
     "document": "./node_modules/jsdoc/jsdoc.js ./src/ -r -d ./docs/ --readme ./docs/README.md",
     "app:stage": "npm run document && git push staging master",
     "app:production": "git push production master",
     "mysql:create_db": "node ./src/util/createDatabase.js",
     "test:karma": "./scripts/karma_test.sh",
-    "test:mocha": "./scripts/mocha_test.sh"
+    "test:mocha": "./scripts/mocha_test.sh",
+    "test:mocha:watch": "./scripts/mocha_test.sh true"
   },
   "repository": {
     "type": "git",
