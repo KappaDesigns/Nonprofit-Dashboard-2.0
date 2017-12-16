@@ -2,11 +2,13 @@
 const Express = require('express');
 const app = Express();
 const bodyParser = require('body-parser');
+const path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(require('./src/routes'));
+app.use('/', Express.static(path.join(__dirname, '/src/app')));
 
 // sets app to listen on a passed port.
 app.listen(process.env.PORT || process.argv[2] || 8080, function () {

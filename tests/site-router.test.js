@@ -8,6 +8,7 @@ const util = require('../src/util');
 const Logger = require('../src/util/Logger');
 const logger = Logger('site_router_test', [], true);
 const testURL = `https://api.github.com/repos/ecoulson/Kappa-Designs-Home/commits?access_token=${process.env.ACCESS_TOKEN}`;
+const testHash = 'b0c652117435956cd51900368a248c2003058653';
 const requestOptions = {
 	uri: testURL,
 	headers: {
@@ -43,7 +44,7 @@ describe('Site Router Test Suite', function() {
 			try {
 				await request({
 					method: 'GET', 
-					uri: 'http://localhost:8080/api/aweifjawiefjawio',
+					uri: 'http://localhost:8080/api/site?path=aweifjawiefjawio',
 					resolveWithFullResponse: true,
 				});
 				
@@ -59,7 +60,7 @@ describe('Site Router Test Suite', function() {
 			try {
 				await request({
 					method: 'GET', 
-					uri: 'http://localhost:8080/api/site/imgs',
+					uri: 'http://localhost:8080/api/site?path=imgs',
 					resolveWithFullResponse: true,
 				});
 				
@@ -75,7 +76,7 @@ describe('Site Router Test Suite', function() {
 			try {
 				const res = await request({
 					method: 'GET', 
-					uri: 'http://localhost:8080/api/site/index.html',
+					uri: 'http://localhost:8080/api/site?path=index.html',
 					resolveWithFullResponse: true,
 				});
 				expect(res.statusCode).to.equal(200);
@@ -89,7 +90,7 @@ describe('Site Router Test Suite', function() {
 			try {
 				const res = await request({
 					method: 'GET', 
-					uri: 'http://localhost:8080/api/site/index.html',
+					uri: 'http://localhost:8080/api/site?path=index.html',
 					resolveWithFullResponse: true,
 				});
 				const data = await Site.getPage('index.html');
@@ -246,7 +247,7 @@ describe('Site Router Test Suite', function() {
 		it('Should receive the correct SHA from api/site/publish', async function() {
 			this.timeout(10000);
 			try {
-				const res = await request({
+				await request({
 					method: 'POST',
 					uri: 'http://localhost:8080/api/site/publish',
 					resolveWithFullResponse: true,
@@ -263,7 +264,36 @@ describe('Site Router Test Suite', function() {
 	});
 
 	describe('Should revert the site back to a certain commit', () => {
-		
+		it('Should POST 404 at api/site/revert/', async function () {
+			try {
+				await request({
+					method: 'POST',
+					uri: 'http://localhost:8080/api/site/revert',
+					resolveWithFullResponse: true,
+					json: true,
+				});
+				const err = new Error('Should not POST successfully');
+				logger.error(err);
+				throw err;
+			} catch (err) {
+				expect(err.statusCode).to.equal(404);
+			}
+		});
+
+		it('Should POST 200 at api/site/revert/' + testHash, async function () {
+			try {
+				const res = await request({
+					method: 'POST',
+					uri: `http://localhost:8080/api/site/revert/${testHash}`,
+					resolveWithFullResponse: true,
+					json: true,
+				});
+				const head = await Site.getHeadCommit();
+				expect(res.body).to.equal(head.sha());
+			} catch(err) {
+				throw err;
+			}
+		});
 	});
 
 	after(async function () {
