@@ -10,6 +10,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.2",
     "dotenv": "^4.0.0",
     "eslint": "^4.11.0",
@@ -25,12 +26,16 @@
     "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.2",
+    "css-loader": "^0.28.7",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.0",
+    "file-loader": "^1.1.5",
     "jsdoc": "^3.5.5",
     "karma": "^1.7.1",
     "karma-babel-preprocessor": "^7.0.0",
@@ -40,11 +45,13 @@
     "karma-sinon": "^1.0.5",
     "mocha": "^4.0.1",
     "sinon": "^4.1.2",
+    "style-loader": "^0.19.1",
     "webpack": "^3.10.0"
   },
   "scripts": {
     "start": "nodemon app.js 8080",
     "init": "./scripts/init.sh",
+    "build": "webpack",
     "document": "./node_modules/jsdoc/jsdoc.js ./src/ -r -d ./docs/ --readme ./docs/README.md",
     "app:stage": "npm run document && git push staging master",
     "app:production": "git push production master",

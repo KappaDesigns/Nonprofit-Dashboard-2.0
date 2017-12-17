@@ -36,6 +36,13 @@ function readConfig() {
 	});
 }
 
+/**
+ * @description reads the config syncronously and returns a javascript object
+ * @returns {Object} returns an object representing the config
+ */
+function readConfigSync() {
+	return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+}
 
 /**
  * @description takes the global file path of a file within
@@ -103,6 +110,7 @@ function decrypt(config, str, next) {
 
 module.exports = {
 	readConfig: readConfig,
+	readConfigSync: readConfigSync,
 	decrypt: decrypt,
 	globalizePath: globalizePath,
 	localizePath: localizePath,

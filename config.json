@@ -9,5 +9,10 @@
 		"password": "6952cb9abe9b25ba144e861e10ffe3ca",
 		"branch": "master",
 		"remote": "origin"
-    }
+	},
+	"webpack": {
+		"entry": "./src/app/src/",
+		"output": "./src/app/build",
+		"filename": "bundle.js"
+	}
 }
