@@ -6,6 +6,7 @@ const path = require('path');
 const WebpackConfig = require('./webpack.config');
 const Webpack = require('webpack');
 const WebpackMiddleware = require('webpack-dev-middleware');
+const WebpackHotMiddleware = require('webpack-hot-middleware');
 
 const WebpackCompiler = Webpack(WebpackConfig);
 const PUBLIC_PATH = path.join(__dirname, '/src/app/build/');
@@ -23,6 +24,10 @@ if (process.NODE_ENV == 'production') {
 		stats: {
 			colors: true,
 		},
+	}));
+
+	app.use(WebpackHotMiddleware(WebpackCompiler, {
+		log: console.log,
 	}));
 }
 

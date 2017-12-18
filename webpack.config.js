@@ -8,9 +8,10 @@ const c = util.readConfigSync();
 let webpackConfig = c.webpack;
 
 const developmetConfig = {
-	entry: {
-		app: path.resolve(__dirname, webpackConfig.entry),
-	},
+	entry: [
+		path.resolve(__dirname, webpackConfig.entry), 
+		'webpack-hot-middleware/client',
+	],
 	output: {
 		path: path.resolve(__dirname, webpackConfig.output),
 		filename: `[name].${webpackConfig.filename}`,
