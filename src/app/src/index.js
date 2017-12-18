@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import './styles/main.css';
 
 const App = (
-	<h1 className="test">Hello, World!</h1>
+	<div>
+		<h1 className="test">Hello, World!</h1>
+	</div>
 );
 
 ReactDOM.render(

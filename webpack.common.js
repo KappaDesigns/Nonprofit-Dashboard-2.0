@@ -8,6 +8,10 @@ const c = util.readConfigSync();
 let webpackConfig = c.webpack;
 
 module.exports = {
+	entry: {
+		vendor: ['react'],
+		app: path.resolve(__dirname, webpackConfig.entry), 
+	},
 	output: {
 		path: path.resolve(__dirname, webpackConfig.output),
 		filename: `[name].${webpackConfig.filename}`,
@@ -15,14 +19,9 @@ module.exports = {
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.js?$/,
 				loader: 'babel-loader',
 				exclude: /(node_modules|bower_components)/,
-			},
-			{
-				test: /\.jsx$/,
-				loader: 'babel-loader',
-				exclude: /node_modules/,
 			},
 			{
 				test: /\.css$/,
@@ -52,5 +51,9 @@ module.exports = {
 			template: path.resolve(__dirname, './src/app/src/index.html'),
 		}),
 		new CleanWebpackPlugin(['build']),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'vendor',
+			minChunks: Infinity,
+		}),
 	],
 };

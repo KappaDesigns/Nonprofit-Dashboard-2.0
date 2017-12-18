@@ -42,4 +42,4 @@ app.listen(process.env.PORT || process.argv[2] || 8080, function () {
 	console.log('Server is listening on port: ' + port);
 });
 
-//https://github.com/gothinkster/node-express-realworld-example-app/blob/master/app.js
+// https://github.com/gothinkster/node-express-realworld-example-app/blob/master/app.js

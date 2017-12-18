@@ -3,5 +3,9 @@
 		"env", 
 		"es2015",
 		"react"
+	],
+	"plugins": [
+		"transform-runtime",
+		"syntax-dynamic-import"
 	]
 }

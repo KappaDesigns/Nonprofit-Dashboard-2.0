@@ -1,17 +1,11 @@
 const webpack = require('webpack');
 const Common = require('./webpack.common');
 const merge = require('webpack-merge');
-const path = require('path');
-const util = require('./src/util/');
-
-const c = util.readConfigSync();
-let webpackConfig = c.webpack;
 
 module.exports = merge(Common, {
-	entry: [
-		path.resolve(__dirname, webpackConfig.entry), 
-		'webpack-hot-middleware/client',
-	],
+	entry: {
+		client: ['./src/app/src/index.js','webpack-hot-middleware/client'],
+	},
 	output: {
 		publicPath: '/',
 	},
