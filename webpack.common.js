@@ -14,7 +14,7 @@ module.exports = {
 	},
 	output: {
 		path: path.resolve(__dirname, webpackConfig.output),
-		filename: `[name].${webpackConfig.filename}`,
+		filename: '[name].[hash].js',
 	},
 	module: {
 		loaders: [
@@ -50,10 +50,14 @@ module.exports = {
 			title: `${c.site} Admin Panel`,
 			template: path.resolve(__dirname, './src/app/src/index.html'),
 		}),
+		new webpack.HashedModuleIdsPlugin(),
 		new CleanWebpackPlugin(['build']),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor',
 			minChunks: Infinity,
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'manifest',
 		}),
 	],
 };

@@ -13,7 +13,6 @@
 	},
 	"webpack": {
 		"entry": "./src/app/src/",
-		"output": "./src/app/build",
-		"filename": "bundle.js"
+		"output": "./src/app/build"
 	}
 }
