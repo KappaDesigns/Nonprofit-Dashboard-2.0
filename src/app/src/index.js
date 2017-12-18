@@ -1,19 +1,21 @@
 import React from 'react';
+import { 
+	BrowserRouter as Router,
+	Route,
+} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-
-import './styles/main.css';
+import Dashboard from './pages/Dashboard';
 
 const App = (
-	<div>
-		<h1 className="test">Hello, World!</h1>
-	</div>
+	<Router>
+		<Route path='/' component={Dashboard}/>
+	</Router>
 );
 
 ReactDOM.render(
 	App,
 	document.getElementById('app')
 );
-
 
 if (module.hot) {
 	module.hot.accept();
