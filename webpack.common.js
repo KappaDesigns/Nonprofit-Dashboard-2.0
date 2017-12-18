@@ -7,28 +7,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const c = util.readConfigSync();
 let webpackConfig = c.webpack;
 
-const developmetConfig = {
-	entry: [
-		path.resolve(__dirname, webpackConfig.entry), 
-		'webpack-hot-middleware/client',
-	],
+module.exports = {
 	output: {
 		path: path.resolve(__dirname, webpackConfig.output),
 		filename: `[name].${webpackConfig.filename}`,
-		publicPath: '/',
-	},
-	devtool: 'inline-source-map',
-	devServer: {
-		contentBase: './build',
-		hot: true,
-		historyApiFallback: true,
-		stats: 'errors-only',
-		host: 'http://localhost:8080/',
-		port: 8080,
-		overlay: {
-			errors: true,
-			warnings: true,
-		},
 	},
 	module: {
 		loaders: [
@@ -70,11 +52,5 @@ const developmetConfig = {
 			template: path.resolve(__dirname, './src/app/src/index.html'),
 		}),
 		new CleanWebpackPlugin(['build']),
-		new webpack.NamedModulesPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
 	],
 };
-
-// console.log(path.resolve(__dirname, webpackConfig.entry, 'index.html'));	
-
-module.exports = developmetConfig;
