@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 if (isProduction) {
-	app.use('/', Express.static(PUBLIC_PATH));
+	app.use('*', Express.static(PUBLIC_PATH));
 } else {
 	app.use(WebpackMiddleware(WebpackCompiler, {
 		publicPath: WebpackConfig.output.publicPath,
