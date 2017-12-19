@@ -44,13 +44,13 @@ app.use(session({
 	saveUninitialized: false,
 }));
 
+app.use(require('./src/routes'));
+
 app.use(function(req, res, next) {
 	var err = new Error('Not Found');
 	err.status = 404;
 	next(err);
 });
-
-app.use(require('./src/routes'));
 
 if (!isProduction) {
 	app.use(function(err, req, res) {
@@ -62,7 +62,6 @@ if (!isProduction) {
 		}});
 	});
 }
-  
 
 app.use(function(err, req, res) {
 	res.status(err.status || 500);

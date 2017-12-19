@@ -98,13 +98,13 @@
 
         
             
-<h4 class="name" id="fs"><span class="type-signature">(constant) </span>fs<span class="type-signature"></span></h4>
+<h4 class="name" id="isPersistent"><span class="type-signature"></span>isPersistent<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    Implements util functions for all modules in the library
+    Checks if this event should be released back into the pool.
 </div>
 
 
@@ -132,13 +132,6 @@
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li><a href="mailto:ivansonofcoul@gmail.com">Evan Coulson</a></li>
-        </ul>
-    </dd>
-    
 
     
 
@@ -149,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line7">line 7</a>
+        <a href="app_build_bundle.js.html">app/build/bundle.js</a>, <a href="app_build_bundle.js.html#line4418">line 4418</a>
     </li></ul></dd>
     
 
@@ -177,7 +170,7 @@
     
 
     
-    <h4 class="name" id="decrypt"><span class="type-signature">(async) </span>decrypt<span class="signature">(config, str, next)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="destructor"><span class="type-signature"></span>destructor<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -185,7 +178,7 @@
 
 
 <div class="description">
-    decrypts a given string using the confgured secret
+    `PooledClass` looks for `destructor` on each instance it releases.
 </div>
 
 
@@ -194,101 +187,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">app configuration object</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>str</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">string to decrypt</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>next</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">callback when finished decrypting</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -324,7 +222,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line79">line 79</a>
+        <a href="app_build_bundle.js.html">app/build/bundle.js</a>, <a href="app_build_bundle.js.html#line4423">line 4423</a>
     </li></ul></dd>
     
 
@@ -347,345 +245,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    returns the decrypted string to the
-callback
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="globalizePath"><span class="type-signature"></span>globalizePath<span class="signature">(filePath)</span><span class="type-signature"> &rarr; {String}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    returns the global file path
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filePath</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">takes in the local site file path</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    returns the global file path of a local path
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="localizePath"><span class="type-signature"></span>localizePath<span class="signature">(filePath)</span><span class="type-signature"> &rarr; {String}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    takes the global file path of a file within
-the local site stored and resolves the string to pertain to the ./site
-dir as the root of the path
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filePath</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">path to file</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line42">line 42</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    returns localized string to the ./site root
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1068,7 +627,7 @@ Sequelize Schema types.
     
 
     
-    <h4 class="name" id="readConfig"><span class="type-signature">(async) </span>readConfig<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="persist"><span class="type-signature"></span>persist<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1076,7 +635,9 @@ Sequelize Schema types.
 
 
 <div class="description">
-    reads the config and returns a javascript object
+    We release all dispatched `SyntheticEvent`s after each event loop, adding
+them back into the pool. This allows a way to hold onto a reference that
+won't be added back into the pool.
 </div>
 
 
@@ -1120,7 +681,7 @@ Sequelize Schema types.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="util_index.js.html">util/index.js</a>, <a href="util_index.js.html#line21">line 21</a>
+        <a href="app_build_bundle.js.html">app/build/bundle.js</a>, <a href="app_build_bundle.js.html#line4409">line 4409</a>
     </li></ul></dd>
     
 
@@ -1143,28 +704,6 @@ Sequelize Schema types.
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    represents the config
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1186,13 +725,13 @@ Sequelize Schema types.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_Site.html">lib/Site</a></li><li><a href="module-util_Logger.html">util/Logger</a></li><li><a href="module-util_MYSQL.html">util/MYSQL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#globalizePath">globalizePath</a></li><li><a href="global.html#localizePath">localizePath</a></li><li><a href="global.html#readConfig">readConfig</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_Site.html">lib/Site</a></li><li><a href="module-util.html">util</a></li><li><a href="module-util_Logger.html">util/Logger</a></li><li><a href="module-util_MYSQL.html">util/MYSQL</a></li></ul><h3>Interfaces</h3><ul><li><a href="DragEvent.html">DragEvent</a></li><li><a href="Event.html">Event</a></li><li><a href="FocusEvent.html">FocusEvent</a></li><li><a href="KeyboardEvent.html">KeyboardEvent</a></li><li><a href="MouseEvent.html">MouseEvent</a></li><li><a href="TouchEvent.html">TouchEvent</a></li><li><a href="UIEvent.html">UIEvent</a></li><li><a href="WheelEvent.html">WheelEvent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#destructor">destructor</a></li><li><a href="global.html#isPersistent">isPersistent</a></li><li><a href="global.html#persist">persist</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 26 2017 17:53:42 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Dec 18 2017 14:45:39 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
