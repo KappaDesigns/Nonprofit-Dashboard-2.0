@@ -4,20 +4,19 @@ import {
 	Route,
 } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
-
 import ReactDOM from 'react-dom';
 
-import Dashboard from './pages/Dashboard';
-import SiteEditor from './pages/SiteEditor';
+import Layout from './components/Layout';
+import Dashboard from './components/Dashboard';
+import SiteEditor from './components/SiteEditor';
 
 const App = (
 	<div>
 		<Router>
-			<div>
-				<Route path="/" component={Dashboard}/>
+			<Layout>
+				<Route exact path="/" component={Dashboard}/>
 				<Route path="/editor" component={SiteEditor}/>
-			</div>
+			</Layout>
 		</Router>
 	</div>
 );

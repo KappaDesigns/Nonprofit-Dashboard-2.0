@@ -15,6 +15,9 @@ router.get('/', function handleReq(req, res, next) {
 		res.status(400).send('No path given for requested resource');
 		return next();
 	}
+	if (req.query.path === '') {
+		res.status(404).send('No query data attached to path query');
+	}
 	const path = util.globalizePath(req.query.path);
 	fs.stat(path, async function handleAccess(err, stats) {
 		if (err) {

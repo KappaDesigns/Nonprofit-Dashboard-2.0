@@ -14,5 +14,15 @@
 	"webpack": {
 		"entry": "./src/app/src/",
 		"output": "./src/app/build"
-	}
+	},
+	"pages": [
+		{
+			"path": "/",
+			"name": "dashboard"
+		},
+		{
+			"path": "/editor",
+			"name": "editor"
+		}
+	]
 }

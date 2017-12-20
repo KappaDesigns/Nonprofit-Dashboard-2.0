@@ -29,10 +29,9 @@ describe('Site Router Test Suite', function() {
 			try {
 				await request({
 					method: 'GET',
-					uri: 'http://localhost:8080/api/site/',
+					uri: 'http://localhost:8080/api/site?path=',
 					resolveWithFullResponse: true,
 				});
-				
 				const err = new Error('Should not successfully get');
 				logger.error(err);
 				throw err;
