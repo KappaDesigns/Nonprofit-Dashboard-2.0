@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "aphrodite": "^1.2.5",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",

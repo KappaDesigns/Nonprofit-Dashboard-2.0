@@ -1,13 +1,14 @@
 import React from 'react';
-import config from '../../../../../../config.json';
 import NavLink from './NavLink';
+import PropTypes from 'prop-types';
 
 export default class Navbar extends React.Component {
 	render() {
 		return (
 			<ul>
+				<li>{this.props.site}</li>
 				{
-					config.pages.map((page, i) => {
+					this.props.pages.map((page, i) => {
 						return <NavLink page={page} key={i} />;
 					})
 				}
@@ -15,3 +16,8 @@ export default class Navbar extends React.Component {
 		);
 	}
 }
+
+Navbar.propTypes = {
+	pages: PropTypes.array,
+	site: PropTypes.string,
+};
