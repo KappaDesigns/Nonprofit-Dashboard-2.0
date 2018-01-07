@@ -2,18 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, css } from 'aphrodite';
+import Styles from '../../../../styles';
 
-const Styles = StyleSheet.create({
-	navLink: {
-		display: 'block',
-		backgroundColor: 'red',
-		fontSize: '18px',
-	},
-	navLinkText: {
-		color: 'black',
-	},
-});
+import { css } from 'aphrodite';
 
 export default class NavLink extends React.Component {
 	render() {

@@ -38,6 +38,7 @@ router.get('/', function handleReq(req, res, next) {
 			try {
 				const data = await Site.getPage(path);
 				res.status(200).send(data);
+				return next();
 			} catch(err) {
 				logger.info('Failure reading file...');
 				res.status(500).send(
