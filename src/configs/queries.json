@@ -1,0 +1,34 @@
+{
+	"SiteRoute": {
+		"get": [
+			{
+				"property": "path",
+				"type": "String"
+			}
+		],
+		"put": {
+			"body": [
+				{
+					"property": "message",
+					"type": "String"
+				},
+				{
+					"property": "html",
+					"type": "String"
+				}
+			],
+			"params": [
+				{
+					"property": "path",
+					"type": "String"
+				}
+			]
+		},
+		"post": [
+			{
+				"property": "hash",
+				"type": "String"
+			}
+		]
+	}
+}
