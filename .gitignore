@@ -59,6 +59,5 @@ typings/
 
 .DS_Store
 
-#ignore site dir
-
+# ignore site directory
 site

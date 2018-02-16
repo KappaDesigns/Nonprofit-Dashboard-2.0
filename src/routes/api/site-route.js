@@ -1,97 +1,76 @@
 const express = require('express');
-const router = express.Router();
 const Logger = require('../../util/Logger');
-const logger = Logger('site_test', ['debug', 'error']);
-const fs = require('fs');
 const util = require('../../util');
 const Site = require('../../lib/site');
+const SiteResource = require('../../lib/site-resource');
+const Validator = require('../../lib/request-validation');
+const QueryConfig = Validator.queries;
+
+const handleError = util.handleError;
+const handleSuccess = util.handleSuccess;
+
+const router = express.Router();
+const logger = Logger('site_test', ['debug', 'error']);
 
 /**
- * @description handles the GETing of all resources within the site
+ * @description This Route file handles the updating, and viewing of
+ * files being contained on the admin site.
+ */
+
+/**
+ * @description gets a queryed resources within the site folder
  */
 router.get('/', function handleReq(req, res, next) {
-	logger.info('Received GET Requeset @ path');
-	if (!req.query.hasOwnProperty('path')) {
-		res.status(400).send('No path given for requested resource');
-		return next();
+	const queryCheck = QueryConfig.SiteRoute.get;
+	let e;
+	if ((e = Validator.validateQuery(req, res, next, queryCheck))) {
+		return e;
 	}
-	if (req.query.path === '') {
-		res.status(404).send('No query data attached to path query');
-	}
-	const path = util.globalizePath(req.query.path);
-	fs.stat(path, async function handleAccess(err, stats) {
-		if (err) {
-			logger.info('Error finding file...');
-			if (err.code === 'ENOENT') {
-				logger.info('File not found');
-				res.status(404).send('File does not exist');
-				return next(err);
-			} else {
-				logger.info('Failure accessing file...');
-				res.status(500).send(
-					'Something went horribly wrong'
-				);
-				return next(err);
+	SiteResource.getFileData(req.query.path, 
+		async function handleFile(err, fileData) {
+			if (err) {
+				logger.error(err);
+				return handleError(err, 404, res, next);
 			}
-		} else if(stats.isFile()) {
-			logger.info('Reading file...');
-			try {
-				const data = await Site.getPage(path);
-				res.status(200).send(data);
-			} catch(err) {
-				logger.info('Failure reading file...');
-				res.status(500).send(
-					'Something went horribly wrong'
-				);
-				return next(err);
-			}
-		} else {
-			logger.info('Not a file...');
-			res.status(400).send('Requested resource is not a file');
-			return next();
+			return handleSuccess(fileData, 200, res, next);
 		}
-	});
+	);
 });
 
 /**
- * @description handles the updating of data to a given resource
+ * @description Updates the file at a given path within the local site
  */
 router.put('/:path', function handleReq(req, res, next) {
-	logger.info('Received PUT Request @ path');
-	const path = util.globalizePath(req.params.path);
-	if (!req.body) {
-		res.status(400).send('No body attached to request');
-		return next();
+	const paramCheck = Validator.queries.SiteRoute.put.params;
+	const bodyCheck = Validator.queries.SiteRoute.put.body;
+	let e;
+	if ((e = Validator.validateParams(req, res, next, paramCheck))) {
+		return e;
 	}
-	if (!req.body.html || !req.body.message) {
-		res.status(400).send('Empty body attached');
-		return next();
+	if ((e = Validator.validateBody(req, res, next, bodyCheck))) {
+		return e;
 	}
-	fs.stat(path, async function handleAccess(err, stats) {
+
+	SiteResource.getFileData(req.params.path, async function handleFile(err, fileData) {
 		if (err) {
-			if (err.code == 'ENOENT') {
-				res.status(404).send('File not found');
-				return next();
-			} else {
-				res.status(500).send('Something went horribly wrong');
-				return next(err);
-			}
-		} else if (stats.isFile()) {
-			try {
-				await Site.editPage(
-					req.body.html, 
-					util.globalizePath(req.params.path), 
-					req.body.message,
-				);
-				res.status(200).send('Modified Page');
-				return next();
-			} catch (err) {
-				res.status(500).send('Something went horribly wrong');
-				return next(err);
-			}
-		} else {
-			res.status(400).send('Requested resource is not a file');
-			return next();
+			logger.error(err);
+			return handleError(err, 404, res, next);
+		}
+		try {
+			await Site.editPage(
+				req.body.html, 
+				util.globalizePath(req.params.path), 
+				req.body.message,
+			);
+			return handleSuccess({
+				message: 'Successfully edited page.',
+				editNote: req.body.message,
+				newFileData: req.body.html,
+				oldFileData: fileData,
+			}, 200, res, next);
+		} catch (err) {
+			logger.error(err);
+			return handleError(err, 500, res, next);
 		}
 	});
 });
@@ -100,17 +79,17 @@ router.put('/:path', function handleReq(req, res, next) {
  * @description updates the site with the current development environment
  */
 router.post('/sync', async function handleReq(req, res, next) {
-	logger.info('Received POST Request @ sync');
 	try {
 		const sha = await Site.sync({
 			firstName: 'test',
 			email: 'test@test.com',
 		});
-		res.status(200).send(sha);
-		return next();
+		return handleSuccess({
+			sha: sha,
+		}, 200, res, next);
 	} catch (err) {
-		res.status(500).send('Something went horribly wrong');
-		return next(err);
+		logger.error(err);
+		return handleError(err, 500, res, next);
 	}
 });
 
@@ -118,14 +97,14 @@ router.post('/sync', async function handleReq(req, res, next) {
  * @description updates the github repository with front end user changes
  */
 router.post('/publish', async function handleReq(req, res, next) {
-	logger.info('Received POST request @ publish');
 	try {
 		const sha = await Site.publish();
-		res.status(200).send(sha);
-		return next();
+		return handleSuccess({
+			sha: sha,
+		}, 200, res, next);
 	} catch (err) {
-		res.status(500).send('Something went horribly wrong');
-		return next(err);
+		logger.error(err);
+		return handleError(err, 500, res, next);
 	}
 });
 
@@ -133,18 +112,19 @@ router.post('/publish', async function handleReq(req, res, next) {
  * @description handles the reversion of changes to a certain point 
  */
 router.post('/revert/:hash', async function handleReq(req, res, next) {
-	logger.info('Received POST request @ publish');
-	if (!req.params.hash) {
-		res.status(404).send('No revert hash given');
-		return next();
+	const paramCheck = Validator.queries.SiteRoute.post;
+	let e;
+	if ((e = Validator.validateParams(req, res, next, paramCheck))) {
+		return e;
 	}
 	try {
 		const sha = await Site.revert(req.params.hash);
-		res.status(200).send(sha);
-		return next();
+		return handleSuccess({
+			sha: sha,
+		}, 200, res, next);
 	} catch (err) {
-		res.status(500).send('Something went horribly wrong');
-		return next();
+		logger.error(err);
+		return handleError(err, 500, res, next);
 	}
 });
 
