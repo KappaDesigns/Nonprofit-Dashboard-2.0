@@ -24,22 +24,23 @@ const input = fs.readFileSync(
 );
 
 describe('Site Router Test Suite', function() {
-	describe('Should test the GET of a file at api/site/:path', () => {
-		it('Should return 404 at /api/site', async () => {
+	describe('Should test the GET of a file at api/site?path=', () => {
+		it('Should return 400 at /api/site', async () => {
 			try {
 				await request({
 					method: 'GET',
 					uri: 'http://localhost:8080/api/site?path=',
 					resolveWithFullResponse: true,
 				});
+				
 				const err = new Error('Should not successfully get');
 				logger.error(err);
 				throw err;
 			} catch(err) {
-				expect(err.statusCode).to.equal(404);
+				expect(err.statusCode).to.equal(400);
 			}
 		});
-		it('Should return 404 at /api/site/aweifjawiefjawio', async () => {
+		it('Should return 404 at /api/site?path=aweifjawiefjawio', async () => {
 			try {
 				await request({
 					method: 'GET', 
@@ -55,7 +56,7 @@ describe('Site Router Test Suite', function() {
 			}
 		});
 	
-		it('Should return 400 at requested directory', async () => {
+		it('Should return 404 at requested directory', async () => {
 			try {
 				await request({
 					method: 'GET', 
@@ -67,7 +68,7 @@ describe('Site Router Test Suite', function() {
 				logger.error(err);
 				throw err;
 			} catch(err) {
-				expect(err.statusCode).to.equal(400);
+				expect(err.statusCode).to.equal(404);
 			}
 		});
 	
@@ -93,7 +94,8 @@ describe('Site Router Test Suite', function() {
 					resolveWithFullResponse: true,
 				});
 				const data = await Site.getPage('index.html');
-				expect(res.body).to.equal(data);
+				let body = JSON.parse(res.body);
+				expect(body.data.fileData).to.equal(data);
 			}  catch(err) {
 				logger.error(err);
 				throw err;
@@ -219,7 +221,7 @@ describe('Site Router Test Suite', function() {
 					json: true,
 				});
 				const head = await Site.getHeadCommit();
-				expect(res.body).to.equal(head.sha());
+				expect(res.body.data.sha).to.equal(head.sha());
 			} catch (err) {
 				logger.error(err);
 				throw err;
@@ -288,7 +290,7 @@ describe('Site Router Test Suite', function() {
 					json: true,
 				});
 				const head = await Site.getHeadCommit();
-				expect(res.body).to.equal(head.sha());
+				expect(res.body.data.sha).to.equal(head.sha());
 			} catch(err) {
 				throw err;
 			}

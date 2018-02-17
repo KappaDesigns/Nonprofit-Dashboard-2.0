@@ -8,7 +8,7 @@ export default class Layout extends React.Component {
 	render() {
 		return (
 			<div className="layout-container">
-				<Navbar site={config.site} pages={config.pages} />
+				<Navbar site={config.site} pages={config.navbar} />
 				{ this.props.children }
 			</div>
 		);
