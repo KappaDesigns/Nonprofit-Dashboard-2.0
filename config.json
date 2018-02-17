@@ -15,6 +15,20 @@
 		"entry": "./src/app/src/",
 		"output": "./src/app/build"
 	},
+	"navbar": [
+		{
+			"path": "/",
+			"name": "dashboard"
+		},
+		{
+			"path": "/logout",
+			"name": "logout"
+		},
+		{
+			"path": "/profile",
+			"name": "profile"
+		}
+	],
 	"pages": [
 		{
 			"path": "/",
@@ -23,6 +37,14 @@
 		{
 			"path": "/editor",
 			"name": "editor"
+		},
+		{
+			"path": "/code",
+			"name": "code"
+		},
+		{
+			"path": "/messages",
+			"name": "messages"
 		}
 	]
 }
