@@ -61,3 +61,6 @@ typings/
 
 # ignore site directory
 site
+
+#ignore the docs folder
+docs

@@ -41,7 +41,7 @@ describe('<Navbar/>', function () {
 		const wrapper = shallow(
 			<Layout />
 		);
-		expect(wrapper.find(Navbar).props().pages).to.have.length(2);
+		expect(wrapper.find(Navbar).props().pages).to.have.length(3);
 	});
 
 	it('Should render three Navlinks', () => {
