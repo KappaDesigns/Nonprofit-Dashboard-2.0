@@ -43,7 +43,6 @@ async function clone(gitURL, localPath) {
 		logger.info(`Successfully cloned git repository ${gitURL} to ${localPath}`);
 	} catch(err) {
 		logger.error(`Error cloning repo.\nError: ${err}`);
-		throw err;
 	}
 	return repo;
 }
