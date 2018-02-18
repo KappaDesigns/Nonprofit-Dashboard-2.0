@@ -29,6 +29,8 @@ const pages = [
 	},
 ];
 
+const config = require('../config');
+
 describe('<Navbar/>', function () {
 	it ('Should have the proper tags in the component', () => {
 		const wrapper = shallow(
@@ -41,7 +43,7 @@ describe('<Navbar/>', function () {
 		const wrapper = shallow(
 			<Layout />
 		);
-		expect(wrapper.find(Navbar).props().pages).to.have.length(3);
+		expect(wrapper.find(Navbar).props().pages).to.have.length(config.navbar.length);
 	});
 
 	it('Should render three Navlinks', () => {

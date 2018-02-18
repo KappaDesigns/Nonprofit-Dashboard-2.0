@@ -29,22 +29,42 @@
 			"name": "profile"
 		}
 	],
-	"pages": [
+	"tiles": [
 		{
 			"path": "/",
-			"name": "dashboard"
+			"name": "dashboard",
+			"color": "red",
+			"icon": {
+				"size": 3,
+				"name": "home"
+			}
 		},
 		{
 			"path": "/editor",
-			"name": "editor"
+			"name": "editor",
+			"color": "cyan",
+			"icon": {
+				"size": 3,
+				"name": "edit"
+			}
 		},
 		{
 			"path": "/code",
-			"name": "code"
+			"name": "code",
+			"color": "orange",
+			"icon": {
+				"size": 3,
+				"name": "code"
+			}
 		},
 		{
 			"path": "/messages",
-			"name": "messages"
+			"name": "messages",
+			"color": "purple",
+			"icon": {
+				"size": 3,
+				"name": "comments"
+			}
 		}
 	]
 }

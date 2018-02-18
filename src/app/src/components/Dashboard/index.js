@@ -1,9 +1,13 @@
 import React from 'react';
+import TileContainer from './TileContainer';
+
+import config from '../../../../../config';
 
 export default class Dashboard extends React.Component {
 	render() {
 		return (
-			<h1 className='test'>Hello, World! [Dashboard]</h1>
+			<TileContainer tiles={config.tiles}>
+			</TileContainer>
 		);
 	}
 }

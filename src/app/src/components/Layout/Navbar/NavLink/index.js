@@ -2,15 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Styles from '../../../../styles';
 
-import { css } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite';
 
 export default class NavLink extends React.Component {
+	constructor() {
+		super();
+		this.styles = StyleSheet.create({
+			navLink: {
+				display: 'block',
+			},
+			navLinkText: {
+				
+			},
+		});
+	}
+
 	render() {
 		return (
-			<Link className={css(Styles.navLink)} to={this.props.page.path}>
-				<li className={css(Styles.navLinkText)}>{this.props.page.name}</li>
+			<Link className={css(this.styles.navLink)} to={this.props.page.path}>
+				<li className={css(this.styles.navLinkText)}>{this.props.page.name}</li>
 			</Link>
 		);
 	}
