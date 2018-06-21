@@ -56,7 +56,7 @@ async function pullRepo(user) {
 	
 		// creates FETCH_HEAD ref for merge
 		let headRef = await createHeadReference(repo);
-	
+
 		const signature = createSignature(user);
 
 		logger.info('Merging..');
@@ -159,7 +159,7 @@ async function push() {
 /**
  * @description reverts the git branch to the requested commit
  * @param {String} hash represents the hash of the commit
- * @returns {Stirng} returns the sha of the reverted commit
+ * @returns {String} returns the sha of the reverted commit
  * @async
  */
 async function revert(hash) {
@@ -397,6 +397,8 @@ async function getHeadCommit() {
 		resolve(commit);
 	});
 }
+
+
 
 module.exports = {
 	getPage: getFile, 

@@ -1,4 +1,5 @@
 {
+	"site": "Kappa Designs",
     "url": "http://kappadesigns.org/",
 	"gitURL": "https://github.com/ecoulson/Kappa-Designs-Home.git",
 	"secret": "ecn6j2xIiseYyXjWi03p",
@@ -9,5 +10,61 @@
 		"password": "6952cb9abe9b25ba144e861e10ffe3ca",
 		"branch": "master",
 		"remote": "origin"
-	}
+	},
+	"webpack": {
+		"entry": "./src/app/src/",
+		"output": "./src/app/build"
+	},
+	"navbar": [
+		{
+			"path": "/",
+			"name": "dashboard"
+		},
+		{
+			"path": "/logout",
+			"name": "logout"
+		},
+		{
+			"path": "/profile",
+			"name": "profile"
+		}
+	],
+	"tiles": [
+		{
+			"path": "/",
+			"name": "dashboard",
+			"color": "red",
+			"icon": {
+				"size": 7,
+				"name": "home"
+			}
+		},
+		{
+			"path": "/editor",
+			"name": "editor",
+			"color": "cyan",
+			"icon": {
+				"size": 7,
+				"name": "edit"
+			}
+		},
+		{
+			"path": "/code",
+			"name": "code",
+			"color": "orange",
+			"icon": {
+				"size": 7,
+				"name": "code"
+			}
+		},
+		{
+			"path": "/messages",
+			"name": "messages",
+			"color": "purple",
+			"icon": {
+				"size": 7,
+				"name": "comments"
+			}
+		}
+	]
 }
