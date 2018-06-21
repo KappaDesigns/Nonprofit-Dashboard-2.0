@@ -32,7 +32,7 @@ router.get('/', function handleReq(req, res, next) {
 				logger.error(err);
 				return handleError(err, 404, res, next);
 			}
-			const parsedSite = Site.parseHTML(fileData);
+			// const parsedSite = Site.parseHTML(fileData);
 			return handleSuccess(fileData, 200, res, next);
 		}
 	);
