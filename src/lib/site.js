@@ -21,7 +21,6 @@ const path = require('path');
 const fs = require('fs');
 const util = require('../util');
 const Logger = require('../util/Logger');
-const HtmlParser = require('./html-parser');
 
 const sitePath = path.resolve(__dirname, '../../site');
 const logger = Logger('Site.js', ['error']);
@@ -408,5 +407,4 @@ module.exports = {
 	publish: push,
 	revert: revert,
 	getHeadCommit: getHeadCommit,
-	parseHTML: HtmlParser,
 };
