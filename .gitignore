@@ -60,7 +60,7 @@ typings/
 .DS_Store
 
 # ignore site directory
-site
+embedded_site
 
 #ignore the docs folder
 docs
