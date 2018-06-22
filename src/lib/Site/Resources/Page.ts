@@ -2,7 +2,8 @@ import { Resource } from "./Resource";
 import { ResourceType } from "./ResourceType";
 import { Script } from "./Script";
 import { Style } from "./Style";
-import { readFile } from "fs";
+import { readFile, writeFile } from "fs";
+import { IllegalResourceFile } from "./IllegalResourceFile";
 
 export class Page implements Resource<string> {
 	private type: ResourceType;
@@ -22,7 +23,13 @@ export class Page implements Resource<string> {
 	private getResourceNameFromPath(): string {
 		let parts: Array<string> = this.path.split('/');
 		let nameParts: Array<string> = parts[parts.length - 1].split('.');
-		return nameParts[0];
+		if (nameParts.length == 1) {
+			throw new IllegalResourceFile(`Illegal resource file is not type of "html"`);
+		} else if (nameParts.length == 2 && nameParts[1] != 'html') {
+			throw new IllegalResourceFile(`Illegal resource file of type "${nameParts[1]}" when it should be "html"`);
+		} else {
+			return nameParts[0];
+		}
 	}
 
 	public getResourceType(): ResourceType {
@@ -53,7 +60,19 @@ export class Page implements Resource<string> {
 		})
 	}
 
-	public setContent(content: string): void {
-		return;
+	public async setContent(content: string): Promise<void> {
+		return await this.writePage(content);
+	}
+
+	private async writePage(content: string): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			writeFile(this.path, content, 'utf-8', (error: Error) => {
+				if (error != null) {
+					return reject(error);
+				} else {
+					resolve();
+				}
+			})
+		})
 	}
 }

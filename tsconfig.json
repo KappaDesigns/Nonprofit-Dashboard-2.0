@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"sourceMap": true,
+		"jsx": "react",
+		"pretty": true,
+		"lib": [
+			"es2015"
+		]
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
