@@ -5,5 +5,4 @@ export interface Resource<T> {
 	getResourcePath(): string,
 	getResourceName(): string,
 	getContent(): Promise<T>,
-	setContent(content: T): void,
 }

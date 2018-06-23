@@ -4,8 +4,11 @@ import { Page } from "./Page";
 import { Script } from "./Script";
 import { Style } from "./Style";
 import { readdir } from "fs";
+import { join } from "path";
+import { ContentType } from "./ContentType";
+import { WSASERVICE_NOT_FOUND } from "constants";
 
-export class Directory implements Resource<Array<Page | Directory | Script | Style>> {
+export class Directory implements Resource<Array<ContentType>> {
 	private type: ResourceType;
 	private path: string;
 	private name: string;
@@ -34,12 +37,12 @@ export class Directory implements Resource<Array<Page | Directory | Script | Sty
 		return this.name;
 	}
 
-	public async getContent(): Promise<Array<Page | Directory | Script | Style>> {
-		return new Promise<Array<Page | Directory | Script | Style>>(async (resolve, reject) => {
-			let resources : Array<Page | Directory | Script | Style> = [];
+	public async getContent(): Promise<Array<ContentType>> {
+		return new Promise<Array<ContentType>>(async (resolve, reject) => {
+			let resources : Array<ContentType> = [];
 			let fileNames = await this.getFileNames();
 			for (let i = 0; i < fileNames.length; i++) {
-				let resource: Page | Directory | Script | Style = this.createResource(fileNames[i]);
+				let resource: ContentType = this.createResource(fileNames[i]);
 				resources.push(resource);
 			}
 			return resolve(resources);
@@ -58,22 +61,19 @@ export class Directory implements Resource<Array<Page | Directory | Script | Sty
 		})
 	}
 
-	private createResource(fileName: string): Page | Directory | Script | Style {
+	private createResource(fileName: string): ContentType {
 		let nameParts: Array<string> = fileName.split('.');
 		let extension: string = nameParts[nameParts.length - 1];
+		let newPath: string = join(this.path, fileName);
 		switch (extension) {
 			case 'html':
-				return new Page(fileName);
+				return new Page(newPath);
 			case 'css':
-				return new Style();
+				return new Style(newPath);
 			case 'js':
-				return new Script();
+				return new Script(newPath);
 			default:
-				return new Directory(fileName);
+				return new Directory(newPath);
 		}
-	}
-
-	public async setContent(): Promise<void> {
-		return null;
 	}
 }

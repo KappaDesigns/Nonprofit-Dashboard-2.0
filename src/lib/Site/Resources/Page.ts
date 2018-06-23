@@ -28,7 +28,11 @@ export class Page implements Resource<string> {
 		} else if (nameParts.length >= 2 && nameParts[nameParts.length - 1] != 'html') {
 			throw new IllegalResourceFile(`Illegal resource file of type "${nameParts[1]}" when it should be "html"`);
 		} else {
-			return nameParts[0];
+			let name: string = "";
+			for (let i = 0; i < nameParts.length - 1; i++) {
+				name += nameParts[i];
+			}
+			return name;
 		}
 	}
 
