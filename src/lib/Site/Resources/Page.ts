@@ -12,8 +12,8 @@ export class Page implements Resource<string> {
 	private styles: Array<Style>;
 	private scripts: Array<Script>;
 
-	constructor(type: ResourceType, path: string) {
-		this.type = type;
+	constructor(path: string) {
+		this.type = ResourceType.Page;
 		this.path = path;
 		this.name = this.getResourceNameFromPath();
 		this.styles = [];
@@ -24,8 +24,8 @@ export class Page implements Resource<string> {
 		let parts: Array<string> = this.path.split('/');
 		let nameParts: Array<string> = parts[parts.length - 1].split('.');
 		if (nameParts.length == 1) {
-			throw new IllegalResourceFile(`Illegal resource file is not type of "html"`);
-		} else if (nameParts.length == 2 && nameParts[1] != 'html') {
+			throw new IllegalResourceFile(`Illegal resource file of type "directory" is not type of "html"`);
+		} else if (nameParts.length >= 2 && nameParts[nameParts.length - 1] != 'html') {
 			throw new IllegalResourceFile(`Illegal resource file of type "${nameParts[1]}" when it should be "html"`);
 		} else {
 			return nameParts[0];

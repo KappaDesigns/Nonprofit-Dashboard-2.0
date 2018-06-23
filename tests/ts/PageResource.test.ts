@@ -10,7 +10,7 @@ describe('Page Test Suite', () => {
 	it ('Should throw an error', () => {
 		try {
 			let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.css');
-			let page: Page = new Page(ResourceType.Page, path);
+			let page: Page = new Page(path);
 		} catch (error) {
 			expect(error.name).to.equal("IllegalResourceFile");
 		}
@@ -19,7 +19,7 @@ describe('Page Test Suite', () => {
 	it ('Should throw an error', () => {
 		try {
 			let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1');
-			let page: Page = new Page(ResourceType.Page, path);
+			let page: Page = new Page(path);
 		} catch (error) {
 			expect(error.name).to.equal("IllegalResourceFile");
 		}
@@ -27,32 +27,32 @@ describe('Page Test Suite', () => {
 
 	it ('Should get the resource type of the page', () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.html');
-		let page: Page = new Page(ResourceType.Page, path);
+		let page: Page = new Page(path);
 		expect(page.getResourceType()).to.equal(ResourceType.Page);
 	});
 
 	it ('Should get the name of the page', () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.html');
-		let page: Page = new Page(ResourceType.Page, path);
+		let page: Page = new Page(path);
 		expect(page.getResourceName()).to.equal('test_1');
 	});
 
 	it ('Should get the path to the page file', () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.html');
-		let page: Page = new Page(ResourceType.Page, path);
+		let page: Page = new Page(path);
 		expect(page.getResourcePath()).to.equal(path);
 	});
 
 	it ('Should read the contents of the resource', async () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.html');
-		let page: Page = new Page(ResourceType.Page, path);
+		let page: Page = new Page(path);
 		let content: string = await page.getContent();
 		expect(content).to.equal(testContent);
 	});
 
 	it ('Should write the contents of the resource', async () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.html');
-		let page: Page = new Page(ResourceType.Page, path);
+		let page: Page = new Page(path);
 		await page.setContent(testContent + '<!-- comment -->');
 		let content: string = await page.getContent();
 		expect(content).to.equal(testContent + '<!-- comment -->');
@@ -60,7 +60,7 @@ describe('Page Test Suite', () => {
 
 	after(async () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_1.html');
-		let page: Page = new Page(ResourceType.Page, path);
+		let page: Page = new Page(path);
 		await page.setContent(testContent);
 	})
 })
