@@ -8,11 +8,14 @@ export class MySQLDataAccessObject {
 
 	constructor() {
 		this.sequelize = new Sequelize({
-			database: process.env.DB_NAME,
+			host: process.env.DB_HOST,
 			username: process.env.DB_USERNAME,
 			password: process.env.DB_PASSWORD,
 			modelPaths: [join(__dirname, 'models')],
-			dialect: "mysql"
+			database: process.env.DB_NAME,
+			dialect: "mysql",
+			operatorsAliases: Sequelize.Op as any,
+			logging: false
 		});
 	}
 

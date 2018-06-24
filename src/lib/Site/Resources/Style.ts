@@ -25,6 +25,9 @@ export class Style implements Resource<string> {
 			let name: string = "";
 			for (let i = 0; i < nameParts.length - 1; i++) {
 				name += nameParts[i];
+				if (i < nameParts.length - 2) {
+					name += "."
+				}
 			}
 			return name;
 		}

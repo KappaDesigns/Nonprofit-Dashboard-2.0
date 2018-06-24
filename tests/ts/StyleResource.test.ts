@@ -62,5 +62,6 @@ describe('Style Test Suite', () => {
 		let path: string = resolve(__dirname, '..', 'helpers', 'test_files', 'test_dir', 'b.css');
 		let style: Style = new Style(path);
 		await style.setContent(testContent);
+		return;
 	})
 })

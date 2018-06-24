@@ -5,6 +5,7 @@ import { Style } from "./Style";
 import { readFile, writeFile } from "fs";
 import { IllegalResourceFile } from "./IllegalResourceFile";
 
+const ENCODING = 'utf-8';
 export class Page implements Resource<string> {
 	private type: ResourceType;
 	private path: string;
@@ -31,6 +32,9 @@ export class Page implements Resource<string> {
 			let name: string = "";
 			for (let i = 0; i < nameParts.length - 1; i++) {
 				name += nameParts[i];
+				if (i < nameParts.length - 2) {
+					name += "."
+				}
 			}
 			return name;
 		}
@@ -54,7 +58,7 @@ export class Page implements Resource<string> {
 
 	private async readPage(): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
-			readFile(this.path, 'utf-8', (error: Error, content: string) => {
+			readFile(this.path, ENCODING, (error: Error, content: string) => {
 				if (error != null) {
 					return reject(error);
 				} else {
@@ -70,7 +74,7 @@ export class Page implements Resource<string> {
 
 	private async writePage(content: string): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			writeFile(this.path, content, 'utf-8', (error: Error) => {
+			writeFile(this.path, content, ENCODING, (error: Error) => {
 				if (error != null) {
 					return reject(error);
 				} else {

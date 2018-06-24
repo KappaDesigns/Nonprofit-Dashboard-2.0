@@ -96,7 +96,7 @@
     "app:stage": "npm run document && git push staging master",
     "app:production": "git push production master",
     "mysql:create_db": "node ./src/util/createDatabase.js",
-    "test": "mocha -r ts-node/register ./tests/**/*.test.ts",
+    "test": "mocha -r ts-node/register ./tests/**/*.test.ts --exit",
     "test:mocha:watch": "./scripts/mocha_test.sh true"
   },
   "repository": {
